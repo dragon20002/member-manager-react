@@ -1,4 +1,6 @@
-// 1. Create a element
+// # JSX
+
+/*** Create a element ***/
 
 // -- Case 1 -> JSX
 const element = (
@@ -23,7 +25,8 @@ element = {
   },
 };
 
-// 2. Render
+/*** Render ***/
+
 ReactDOM.render(
   element,
   document.getElementById('root'),

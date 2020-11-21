@@ -1,6 +1,9 @@
 # State & Lifecycle
 
 1. 함수형 컴포넌트
+
+- 함수로 구현한 Component.
+- 주로 간단한 텍스트를 출력하는 컴포넌트를 생성할 때 사용
   ```js
   function Clock(props) { // Component
     return (
@@ -20,14 +23,16 @@
 
   setInterval(tick, 1000);
   ```
-- 함수로 구현한 Component.
 - 현재 시간을 props로 주입함.
+
 
 2. 클래스형 컴포넌트
 
 - React.Component를 상속받은 Class로 Component를 구현.
 - state를 가질 수 있음.
 - `props`
+  - 읽기전용
+  - 컴포넌트 외부에서 값을 받아옴.
   ```js
   class Clock extends React.Component {
     render() {
@@ -51,6 +56,8 @@
   ```
 
 - `state`
+  - 생성자에서만 정의 가능
+  - 컴포넌트 내부에서 값 변경 가능 <code>this.setState({...})</code>
   ```js
   class Clock extends React.Component {
     constructor(props) {
