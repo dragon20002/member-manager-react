@@ -36,3 +36,22 @@
     transform: rotate(360deg);
   }
 }
+
+#app {
+  font-family: Avenir, Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-align: center;
+  color: #2c3e50;
+}
+
+.header {
+  padding: 30px;
+}
+
+.footer {
+  margin-top: 100px;
+  padding: 30px;
+  text-align: center;
+  background-color: #eeeeee;
+}

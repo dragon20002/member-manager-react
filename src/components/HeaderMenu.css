@@ -1,0 +1,19 @@
+.menuItem {
+  display: inline-block;
+}
+
+.menuItem a {
+  font-weight: bold;
+  color: #2c3e50;
+}
+
+.menuItem a.active {
+  color: #42b983;
+}
+
+.menuItem:not(:last-child) a::after {
+  content: "|";
+  color: #42b983;
+  padding-left: 5px;
+  padding-right: 5px;
+}

@@ -68,3 +68,88 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/d
 ### `npm run build` fails to minify
 
 This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+
+
+## Issues
+
+### React Router
+
+- 설치
+  ```bash
+  npm install react-router-dom
+  ```
+
+- 사용법
+
+  - `BrowserRouter`, `Switch`, `Route`
+    ```js
+    // Components/SomeView.js
+    import React from 'react';
+    import { BrowserRouter, Switch, Route } from 'react-router-dom';
+    import HeaderMenu from "../Screens/HeaderMenu";
+    import Aladin from "../Screens/Aladin";
+    import LionKing from "../Screens/LionKing";
+    import SpiderMan from "../Screens/SpiderMan";
+
+    export default () => (
+      {/* 리액트라우터 관련 태그 컨테이너 */}
+      <BrowserRouter>
+        {/* <Link /> 나 <Link />를 포함한 뷰 */}
+        <HeaderMenu />
+
+        {/* 라우팅 경로(path)에 따라 화면(component)를 보여주는 컨테이너 */}
+        <Switch>
+          <Route path="/aladin" component={Aladin} />
+          <Route path="/lionking" component={LionKing} />
+          <Route path="/spiderman" component={SpiderMan} />
+        </Switch>
+      </BrowserRouter>
+    )
+    ```
+
+  - `Link`
+    ```js
+    // Components/HeaderMenu.js
+    import React from 'react';
+    import { Link } from "react-router-dom";
+
+    function HeaderMenu() {
+      return (
+        <div>
+          <ul>
+            <li>
+              {/* 누르면 <Switch/> 내부를 특정 뷰로 라우팅시켜준다. */}
+              <Link to="/aladin">Aladin</Link>
+            </li>
+            <li>
+              <Link to="/lionking">Lion King</Link>
+            </li>
+            <li>
+              <Link to="/spiderman">Spider Man</Link>
+            </li>
+          </ul>
+        </div>
+      )
+    }
+
+    export default HeaderMenu;
+    ```
+
+
+> 참고 [ki_blank.log](https://velog.io/@ki_blank/React-Router-1.-8njzuummrs)
+
+## Front-End 프레임워크의 한계점
+
+### 서버 Session을 사용할 수 없다.
+
+- 로그인 기능 구현 시, 로그인된 사용자 정보를 서버 Session에 저장할 수 없어 JWT (JSON Web Token)을 사용하는 등 매요청마다 Front-End에서 로그인된 사용자임을 인증할 수단이 필요하다.
+
+### 사이트가 가진 정보를 검색엔진에 노출시키기 어렵다.
+
+- server side rendering(SSR): html에 모든 데이터를 심어서 데이터가 수정을 html로 자동으로 해서 브라우저로 띄우는 방식 => html에서 자료를 구할 수 있음 => 노출에 더 유리
+
+- client side rendering(CSR): SPI로 구성되어 있어서 html로 들어가도 자료, 정보에 대한 내용 없이 div 태그 하나.. 덩그러니 있어서 의미있는 정보나 자료를 구할 수 없음. 이 부분이 문제점이라고 할 수 있음. 사이트가 검색 노출이 덜 됨. 키워드를 올려도. 구글봇이 내용인식을 못하므로. =======> 백엔드와 프론트엔드가 완전히 분리될 수 밖에 없는 이유.
+
+- Front-End 프레임워크는 CSR에 해당하며, 검색 노출 부분은 프론트 개발자가 신경써 봐야 하는 것.
+
+> https://velog.io/@aaronddy/React-session-

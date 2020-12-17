@@ -1,0 +1,8 @@
+table thead {
+  color: white;
+  background-color: #42b983;
+}
+
+table tbody tr:nth-child(even) {
+  background-color: #42b9832a;
+}

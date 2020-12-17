@@ -1,0 +1,20 @@
+.header-top {
+  text-align: right;
+}
+
+.header-top img {
+  width: 24px;
+  margin: 0px 8px 0px 8px;
+  border-radius: 50%;
+}
+
+.header-top span {
+  vertical-align: middle;
+}
+
+.header-top span:not(:last-child)::after {
+  content: "|";
+  color: black;
+  padding-left: 5px;
+  padding-right: 5px;
+}

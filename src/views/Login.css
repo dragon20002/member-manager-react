@@ -1,0 +1,55 @@
+.login {
+  margin: auto;
+  padding: 30px;
+  width: 380px;
+  text-align: left;
+  background-color: #eeeeee;
+  border-radius: 5pt;
+}
+
+.login .input-wrap {
+  height: 128px;
+}
+
+.login .label {
+  bottom: 0;
+  display: none;
+}
+
+.login label {
+  color: #888888;
+  font-size: 0.8em;
+  font-weight: bold;
+}
+
+.login input:focus {
+  border-color: #42b983;
+}
+
+.login .login-btn {
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+.login a {
+  color: #888888;
+  text-decoration-color: black;
+}
+
+.login .login-type {
+  margin-bottom: 10px;
+}
+
+.login .login-type .item {
+  padding: 4px;
+  background-color: white;
+  border: 1px solid #42b983;
+  border-radius: 8px;
+  display: inline-block;
+  vertical-align: middle;
+  margin: 1px;
+}
+
+.login .login-menu .item:not(:last-child)::after {
+  content: " | ";
+}
