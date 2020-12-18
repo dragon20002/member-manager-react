@@ -50,8 +50,8 @@ class App extends React.Component {
   }
 
   componentDidMount() {
-    const loginType = localStorage.getItem('login-type');
-    const token = localStorage.getItem('token');
+    const loginType = sessionStorage.getItem('login-type');
+    const token = sessionStorage.getItem('token');
     this.state.axios.defaults.headers.loginType = loginType;
     this.state.axios.defaults.headers.token = token;
     this.checkAuth();
@@ -75,6 +75,10 @@ class App extends React.Component {
   }
 
   handleLogin(loginType, user) {
+    sessionStorage.setItem('login-type', loginType);
+    sessionStorage.setItem('token', user.token);
+    sessionStorage.setItem('imageUrl', user.imageUrl);
+    sessionStorage.setItem('name', user.name);
     this.state.axios.defaults.headers.loginType = loginType;
     this.state.axios.defaults.headers.token = user.token;
     this.setState({
@@ -85,10 +89,10 @@ class App extends React.Component {
   }
 
   invalidateAuth() {
-    localStorage.setItem('login-type', null);
-    localStorage.setItem('token', null);
-    localStorage.setItem('imageUrl', null);
-    localStorage.setItem('name', null);
+    sessionStorage.setItem('login-type', null);
+    sessionStorage.setItem('token', null);
+    sessionStorage.setItem('imageUrl', null);
+    sessionStorage.setItem('name', null);
     this.state.axios.defaults.headers.loginType = null;
     this.state.axios.defaults.headers.token = null;
     this.setState({
@@ -103,24 +107,26 @@ class App extends React.Component {
   }  
 
   render() {
+    console.log('[App]', 'render()');
+    console.log(this.state);
     const {menus, hasAuth, imageUrl, name, isLoading} = this.state;
 
     return (
       <div id="app" className="App">
         <div className="header">
+          <HeaderTop hasAuth={hasAuth} imageUrl={imageUrl} name={name}
+            doLogout={this.handleLogout} />
           <Router>
-            <HeaderTop hasAuth={hasAuth} imageUrl={imageUrl} name={name}
-              doLogout={this.handleLogout} />
             <HeaderMenu menus={menus} />
             <Suspense fallback="">
               <Switch>
                 <Route path="/home" component={Home} />
-                <Route path="/show-members" render={(props) => <ShowMembers
+                <Route path="/show-members" component={(props) => <ShowMembers
                   {...props}
                   invalidateAuth={this.invalidateAuth} />} />
                 <Route path="/about" component={About} />
                 <Route path="/create-member" component={CreateMember} />
-                <Route path="/login" render={(props) => <Login
+                <Route path="/login" component={(props) => <Login
                   {...props}
                   doLogin={this.handleLogin}
                   invalidateAuth={this.invalidateAuth} />} />

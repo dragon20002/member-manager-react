@@ -138,18 +138,18 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/t
 
 > 참고 [ki_blank.log](https://velog.io/@ki_blank/React-Router-1.-8njzuummrs)
 
-## Front-End 프레임워크의 한계점
+## Front-End 프레임워크 고민할 점
 
 ### 서버 Session을 사용할 수 없다.
 
 - 로그인 기능 구현 시, 로그인된 사용자 정보를 서버 Session에 저장할 수 없어 JWT (JSON Web Token)을 사용하는 등 매요청마다 Front-End에서 로그인된 사용자임을 인증할 수단이 필요하다.
 
-### 사이트가 가진 정보를 검색엔진에 노출시키기 어렵다.
-
-- server side rendering(SSR): html에 모든 데이터를 심어서 데이터가 수정을 html로 자동으로 해서 브라우저로 띄우는 방식 => html에서 자료를 구할 수 있음 => 노출에 더 유리
+### CSR vs SSR 결정. 사이트가 가진 정보를 검색엔진에 노출시키기 어렵다.
 
 - client side rendering(CSR): SPI로 구성되어 있어서 html로 들어가도 자료, 정보에 대한 내용 없이 div 태그 하나.. 덩그러니 있어서 의미있는 정보나 자료를 구할 수 없음. 이 부분이 문제점이라고 할 수 있음. 사이트가 검색 노출이 덜 됨. 키워드를 올려도. 구글봇이 내용인식을 못하므로. =======> 백엔드와 프론트엔드가 완전히 분리될 수 밖에 없는 이유.
 
-- Front-End 프레임워크는 CSR에 해당하며, 검색 노출 부분은 프론트 개발자가 신경써 봐야 하는 것.
+- server side rendering(SSR): html에 모든 데이터를 심어서 데이터가 수정을 html로 자동으로 해서 브라우저로 띄우는 방식 => html에서 자료를 구할 수 있음 => 노출에 더 유리
+
+- 일반적으로 Front-End 프레임워크는 CSR에 해당하며 프레임워크가 직접 지원하거나 외부 라이브러리를 사용하여 SSR로 만들 수 있다.
 
 > https://velog.io/@aaronddy/React-session-
