@@ -1,25 +1,20 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { NavLink } from 'react-router-dom';
 import './HeaderMenu.css';
 
-class HeaderMenu extends React.Component {
-  constructor(props) {
-    super(props);
-  }
+const HeaderMenu = ({ menus }) => {
+  const divMenus = menus.map((menu) => (
+    <div className="menuItem h5" key={menu.path}>
+      <NavLink to={menu.path}>{menu.name}</NavLink>
+    </div>
+  ));
 
-  render() {
-    const menus = this.props.menus.map((menu, index) =>
-      <div className="menuItem h5" key={index}>
-        <NavLink to={menu.path}>{menu.name}</NavLink>
-      </div>
-    );
+  return <div className="header-menu">{divMenus}</div>;
+};
 
-    return (
-      <div className="header-menu">
-        {menus}
-      </div>
-    );
-  }
-}
+HeaderMenu.propTypes = {
+  menus: PropTypes.arrayOf(PropTypes.object).isRequired,
+};
 
 export default HeaderMenu;

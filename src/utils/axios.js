@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios from 'axios';
 
 let $axios = null;
 
@@ -8,8 +8,8 @@ function BaseAxios() {
       baseURL: `${process.env.REACT_APP_HOST}`,
       timeout: 10000,
       headers: {
-        type: "",
-        token: "",
+        type: '',
+        token: '',
       },
     });
   }

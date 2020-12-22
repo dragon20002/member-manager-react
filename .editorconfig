@@ -5,3 +5,5 @@ end_of_line = crlf
 trim_trailing_whitespace = true
 insert_final_newline = true
 max_line_length = 100
+quote_type = single
+spaces_around_brackets = inside

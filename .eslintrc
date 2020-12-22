@@ -1,0 +1,19 @@
+{
+  "env": {
+    "browser": true,
+    "es6": true,
+    "node": true
+  },
+  "parser": "babel-eslint",
+  "parserOptions": {
+    "sourceType": "module",
+    "allowImportExportEverywhere": true
+  },
+  "extends": ["airbnb"],
+  "rules": {
+    "linebreak-style": 0,
+    "jsx-a11y/label-has-associated-control": 0,
+    "class-methods-use-this": 0,
+    "jsx-a11y/no-static-element-interactions": 0
+  }
+}

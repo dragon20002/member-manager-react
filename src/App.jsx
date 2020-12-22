@@ -1,23 +1,17 @@
-import { BrowserRouter as Router, Switch, Route, Redirect, useHistory } from 'react-router-dom';
-import './App.css';
-import React, { Suspense } from 'react'
+import React, { Suspense } from 'react';
+import {
+  BrowserRouter as Router, Switch, Route, Redirect,
+} from 'react-router-dom';
 import HeaderTop from './components/HeaderTop';
 import HeaderMenu from './components/HeaderMenu';
 import Home from './views/Home';
-const ShowMembers = React.lazy(() =>
-  import(/* webpackChunkName: "showMembers" */ './views/ShowMembers')
-);
-const About = React.lazy(() =>
-  import(/* webpackChunkName: "about" */ './views/About')
-);
-const CreateMember = React.lazy(() =>
-  import(/* webpackChunkName: "createMember" */ './views/CreateMember')
-);
-const Login = React.lazy(() =>
-  import(/* webpackChunkName: "login" */ './views/Login')
-);
+import ShowMembers from './views/ShowMembers';
+import About from './views/About';
+import CreateMember from './views/CreateMember';
+import Login from './views/Login';
 import BaseAxios from './utils/axios';
 import LoadingBar from './components/LoadingBar';
+import './App.css';
 
 class App extends React.Component {
   constructor(props) {
@@ -26,17 +20,20 @@ class App extends React.Component {
       axios: BaseAxios(),
       menus: [
         {
-          path: "/home",
-          name: "메인"
+          id: 0,
+          path: '/home',
+          name: '메인',
         },
         {
-          path: "/show-members",
-          name: "회원관리"
+          id: 1,
+          path: '/show-members',
+          name: '회원관리',
         },
         {
-          path: "/about",
-          name: "About"
-        }
+          id: 2,
+          path: '/about',
+          name: 'About',
+        },
       ],
       hasAuth: false,
       imageUrl: '',
@@ -50,37 +47,22 @@ class App extends React.Component {
   }
 
   componentDidMount() {
+    const { axios } = this.state;
     const loginType = sessionStorage.getItem('login-type');
     const token = sessionStorage.getItem('token');
-    this.state.axios.defaults.headers.loginType = loginType;
-    this.state.axios.defaults.headers.token = token;
+    axios.defaults.headers.loginType = loginType;
+    axios.defaults.headers.token = token;
     this.checkAuth();
   }
 
-  checkAuth() {
-    this.setState({isLoading: true});
-    BaseAxios().get('/api/login/has-auth')
-      .then((response) => {
-        console.log('[App]', '/api/login/has-auth', response);
-        const { hasAuth, loginType, token, imageUrl, name, } = response.data;
-
-        if (hasAuth) {
-          this.handleLogin(loginType, {token, imageUrl, name});
-        } else {
-          this.invalidateAuth();
-        }
-      }).finally(() => {
-        this.setState({isLoading: false});
-      });
-  }
-
   handleLogin(loginType, user) {
+    const { axios } = this.state;
     sessionStorage.setItem('login-type', loginType);
     sessionStorage.setItem('token', user.token);
     sessionStorage.setItem('imageUrl', user.imageUrl);
     sessionStorage.setItem('name', user.name);
-    this.state.axios.defaults.headers.loginType = loginType;
-    this.state.axios.defaults.headers.token = user.token;
+    axios.defaults.headers.loginType = loginType;
+    axios.defaults.headers.token = user.token;
     this.setState({
       hasAuth: true,
       imageUrl: user.imageUrl,
@@ -88,13 +70,18 @@ class App extends React.Component {
     });
   }
 
+  handleLogout() {
+    this.invalidateAuth();
+  }
+
   invalidateAuth() {
+    const { axios } = this.state;
     sessionStorage.setItem('login-type', null);
     sessionStorage.setItem('token', null);
     sessionStorage.setItem('imageUrl', null);
     sessionStorage.setItem('name', null);
-    this.state.axios.defaults.headers.loginType = null;
-    this.state.axios.defaults.headers.token = null;
+    axios.defaults.headers.loginType = null;
+    axios.defaults.headers.token = null;
     this.setState({
       hasAuth: false,
       imageUrl: '',
@@ -102,45 +89,80 @@ class App extends React.Component {
     });
   }
 
-  handleLogout() {
-    this.invalidateAuth();
-  }  
+  checkAuth() {
+    this.setState({ isLoading: true });
+    BaseAxios()
+      .get('/api/login/has-auth')
+      .then((response) => {
+        console.log('[App]', '/api/login/has-auth', response);
+        const {
+          hasAuth, loginType, token, imageUrl, name,
+        } = response.data;
+
+        if (hasAuth) {
+          this.handleLogin(loginType, { token, imageUrl, name });
+        } else {
+          this.invalidateAuth();
+        }
+      })
+      .finally(() => {
+        this.setState({ isLoading: false });
+      });
+  }
 
   render() {
     console.log('[App]', 'render()');
-    console.log(this.state);
-    const {menus, hasAuth, imageUrl, name, isLoading} = this.state;
+    console.log('[App]', 'state = ', this.state);
+    const {
+      menus, hasAuth, imageUrl, name, isLoading,
+    } = this.state;
 
     return (
       <div id="app" className="App">
         <div className="header">
-          <HeaderTop hasAuth={hasAuth} imageUrl={imageUrl} name={name}
-            doLogout={this.handleLogout} />
           <Router>
+            <HeaderTop
+              hasAuth={hasAuth}
+              imageUrl={imageUrl}
+              name={name}
+              doLogout={this.handleLogout}
+            />
             <HeaderMenu menus={menus} />
             <Suspense fallback="">
               <Switch>
                 <Route path="/home" component={Home} />
-                <Route path="/show-members" component={(props) => <ShowMembers
-                  {...props}
-                  invalidateAuth={this.invalidateAuth} />} />
+                <Route
+                  path="/show-members"
+                  render={() => (
+                    <ShowMembers
+                      invalidateAuth={this.invalidateAuth}
+                    />
+                  )}
+                />
                 <Route path="/about" component={About} />
                 <Route path="/create-member" component={CreateMember} />
-                <Route path="/login" component={(props) => <Login
-                  {...props}
-                  doLogin={this.handleLogin}
-                  invalidateAuth={this.invalidateAuth} />} />
+                <Route
+                  path="/login"
+                  render={() => (
+                    <Login
+                      onLoginSuccessCallback={this.handleLogin}
+                      invalidateAuth={this.invalidateAuth}
+                    />
+                  )}
+                />
                 {/*
                 <Route path="/show-member" component={ShowMember} />
                 <Route path="/error" component={Error} />
                 */}
-                <Route path="/"><Redirect to="/home" /></Route>
+                <Route path="/">
+                  <Redirect to="/home" />
+                </Route>
               </Switch>
             </Suspense>
           </Router>
         </div>
         <div className="footer">&copy;2020</div>
-        <LoadingBar isLoading={isLoading} />
+        {isLoading && <LoadingBar />}
       </div>
     );
   }

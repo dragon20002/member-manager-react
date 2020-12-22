@@ -1,14 +1,11 @@
+import React from 'react';
 import './LoadingBar.css';
 
-function LoadingBar(props) {
-  const isLoading = props.isLoading;
-
-  return (
-    <div>
-      {isLoading && <div className="loader-back" />}
-      {isLoading && <div className="loader" />}
-    </div>
-  ); 
-}
+const LoadingBar = () => (
+  <div>
+    <div className="loader-back" />
+    <div className="loader" />
+  </div>
+);
 
 export default LoadingBar;

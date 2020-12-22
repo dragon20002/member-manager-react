@@ -138,6 +138,64 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/t
 
 > 참고 [ki_blank.log](https://velog.io/@ki_blank/React-Router-1.-8njzuummrs)
 
+### ESLint
+
+1. 설치
+
+```
+$ npm i -D eslint eslint-config-airbnb eslint-plugin-import eslint-plugin-jsx-a11y eslint-plugin-react eslint-plugin-react-hooks
+
+# eslint 중 prop type 명시할 때 사용. TypeScript 사용시 안해도 됨.
+$ npm i prop-types
+```
+
+- VSCode Extensions 추가
+
+  - ESLint
+  - Prettier - Code formatter
+
+2. 설정
+
+- {root}/.editorconfig (VSCode 설정)
+
+    ```properties
+    [*.{js,jsx,ts,tsx,jsx}]
+    indent_style = space
+    indent_size = 2
+    end_of_line = crlf
+    trim_trailing_whitespace = true
+    insert_final_newline = true
+    max_line_length = 100
+    quote_type = single
+    spaces_around_brackets = inside
+    ```
+
+- {root}/.eslintrc (ESLint 설정)
+
+    ```json
+    {
+      "env": {
+        "browser": true,
+        "es6": true,
+        "node": true
+      },
+      "parser": "babel-eslint",
+      "parserOptions": {
+        "sourceType": "module",
+        "allowImportExportEverywhere": true
+      },
+      "extends": ["airbnb"],
+      "rules": {
+        "linebreak-style": 0,
+        "jsx-a11y/label-has-associated-control": 0,
+        "class-methods-use-this": 0,
+        "jsx-a11y/no-static-element-interactions": 0
+      }
+    }
+    ```
+
+- VSCode 우측하단 ESLint, Prettier 활성화
+
 ### [Scoped CSS](https://create-react-app.dev/docs/adding-a-css-modules-stylesheet/)
 
 0. 제약사항

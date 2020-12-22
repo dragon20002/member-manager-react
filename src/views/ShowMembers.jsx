@@ -1,4 +1,6 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+import { withRouter } from 'react-router-dom';
 import BaseAxios from '../utils/axios';
 import LoadingBar from '../components/LoadingBar';
 import './ShowMembers.css';
@@ -9,30 +11,40 @@ class ShowMembers extends React.Component {
     this.state = {
       isLoading: false,
       members: [],
-    }
+    };
   }
 
   componentDidMount() {
+    const { invalidateAuth, history } = this.props;
+    let isMounted = true; // Unmount된 컴포넌트의 State 변경을 막기 위한 변수
+
     this.setState({ isLoading: true });
-    BaseAxios().get('/api/members')
+    BaseAxios()
+      .get('/api/members')
       .then((response) => {
-        this.setState({members: response.data});
-      }).catch((err) => {
+        this.setState({ members: response.data });
+      })
+      .catch((err) => {
         const { status } = err.response;
         if (status === 401) {
-          this.props.invalidateAuth();
+          invalidateAuth();
 
           // 로그인화면으로 이동
-          this.props.history.push('/login');
+          isMounted = false;
+          history.push('/login');
         }
-      }).finally(() => {
-        this.setState({ isLoading: false });
+      })
+      .finally(() => {
+        if (isMounted) {
+          this.setState({ isLoading: false });
+        }
       });
   }
 
   render() {
-    const isLoading = this.state.isLoading;
-    const members = this.state.members.map((member) =>
+    const { isLoading, members } = this.state;
+
+    const trMembers = members.map((member) => (
       <tr key={member.id}>
         <td>{member.userId}</td>
         <td>{member.name}</td>
@@ -40,7 +52,7 @@ class ShowMembers extends React.Component {
         <td>{member.email}</td>
         <td>{member.address}</td>
       </tr>
-    );
+    ));
 
     return (
       <div className="home">
@@ -54,14 +66,17 @@ class ShowMembers extends React.Component {
               <th>주소</th>
             </tr>
           </thead>
-          <tbody>
-            {members}
-          </tbody>
+          <tbody>{trMembers}</tbody>
         </table>
-        <LoadingBar isLoading={isLoading} />
+        {isLoading && <LoadingBar />}
       </div>
     );
   }
 }
 
-export default ShowMembers;
+ShowMembers.propTypes = {
+  invalidateAuth: PropTypes.func.isRequired,
+  history: PropTypes.instanceOf(Object).isRequired,
+};
+
+export default withRouter(ShowMembers);
