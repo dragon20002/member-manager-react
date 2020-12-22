@@ -10,7 +10,7 @@ const HeaderTop = (props) => {
   let { imageUrl, name } = props;
 
   if (!hasAuth) {
-    imageUrl = NoImage;
+    imageUrl = '../assets/user-circle-solid.svg';
     name = '내 정보';
   } else if (!imageUrl) {
     imageUrl = NoImage;

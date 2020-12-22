@@ -12,6 +12,10 @@
   vertical-align: middle;
 }
 
+.header-top button {
+  padding: 0;
+}
+
 .header-top span:not(:last-child)::after {
   content: "|";
   color: black;

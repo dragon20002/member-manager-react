@@ -3,8 +3,10 @@ import PropTypes from 'prop-types';
 import $ from 'jquery';
 import { Link, withRouter } from 'react-router-dom';
 import BaseAxios from '../utils/axios';
+import AlertPopup from '../components/AlertPopup';
 import LoadingBar from '../components/LoadingBar';
 import './Login.css';
+import GoogleLogin from '../components/GoogleLogin';
 
 class Login extends React.Component {
   constructor(props) {
@@ -13,6 +15,9 @@ class Login extends React.Component {
       userId: '',
       password: '',
       isLoading: false,
+      popupMsg: '',
+      popupCallback: null,
+      showAlertPopup: false,
     };
 
     this.handleKeyUp = this.handleKeyUp.bind(this);
@@ -62,7 +67,8 @@ class Login extends React.Component {
   }
 
   handleKeyUp(e) {
-    if (e.key === 13) {
+    console.log(e);
+    if (e.keyCode === 13) {
       this.handleLogin();
     }
   }
@@ -84,13 +90,13 @@ class Login extends React.Component {
 
   handleOnFailGoogleLogin(e) {
     console.log('[Login]', e.error);
-    // this.setState({
-    //   popupMsg: e.error,
-    //   popupCallback: () => {
-    //     this.setState({ showAlertPopup: false });
-    //   },
-    //   showAlertPopup: true,
-    // });
+    this.setState({
+      popupMsg: e.error,
+      popupCallback: () => {
+        this.setState({ showAlertPopup: false });
+      },
+      showAlertPopup: true,
+    });
   }
 
   handleLogin() {
@@ -100,23 +106,23 @@ class Login extends React.Component {
     let isMounted = true;
 
     if (userId.length === 0) {
-      // this.setState({
-      //   popupMsg: '아이디를 입력해주세요.',
-      //   popupCallback: () => {
-      //     this.setState({ showAlertPopup: false });
-      //   },
-      //   showAlertPopup: true,
-      // });
+      this.setState({
+        popupMsg: '아이디를 입력해주세요.',
+        popupCallback: () => {
+          this.setState({ showAlertPopup: false });
+        },
+        showAlertPopup: true,
+      });
       return;
     }
     if (password.length === 0) {
-      // this.setState({
-      //   popupMsg: '비밀번호를 입력해주세요.',
-      //   popupCallback: () => {
-      //     this.setState({ showAlertPopup: false });
-      //   },
-      //   showAlertPopup: true,
-      // });
+      this.setState({
+        popupMsg: '비밀번호를 입력해주세요.',
+        popupCallback: () => {
+          this.setState({ showAlertPopup: false });
+        },
+        showAlertPopup: true,
+      });
       return;
     }
 
@@ -135,24 +141,24 @@ class Login extends React.Component {
           history.push('/');
         } else {
           invalidateAuth();
-          // this.setState({
-          //   popupMsg: '계정 정보를 찾을 수 없습니다.',
-          //   popupCallback: () => {
-          //     this.setState({ showAlertPopup: false });
-          //   },
-          //   showAlertPopup: true,
-          // });
+          this.setState({
+            popupMsg: '계정 정보를 찾을 수 없습니다.',
+            popupCallback: () => {
+              this.setState({ showAlertPopup: false });
+            },
+            showAlertPopup: true,
+          });
         }
       })
       .catch(() => {
         invalidateAuth();
-        // this.setState({
-        //   popupMsg: '계정 정보를 찾을 수 없습니다.',
-        //   popupCallback: () => {
-        //     this.setState({ showAlertPopup: false });
-        //   },
-        //   showAlertPopup: true,
-        // });
+        this.setState({
+          popupMsg: '계정 정보를 찾을 수 없습니다.',
+          popupCallback: () => {
+            this.setState({ showAlertPopup: false });
+          },
+          showAlertPopup: true,
+        });
       })
       .finally(() => {
         if (isMounted) {
@@ -163,7 +169,7 @@ class Login extends React.Component {
 
   render() {
     const {
-      userId, password, isLoading,
+      userId, password, popupMsg, showAlertPopup, popupCallback, isLoading,
     } = this.state;
 
     return (
@@ -211,12 +217,12 @@ class Login extends React.Component {
           </button>
         </form>
         <div className="login-type">
-          {/* <span className="item">
+          <span className="item">
             <GoogleLogin
               onSuccess={this.handleOnSuccessGoogleLogin}
               onFailure={this.handleOnFailGoogleLogin}
             />
-          </span> */}
+          </span>
           {/* <span className="item">
             <GithubLogin
               onSuccess={this.handleOnSuccessGithubLogin}
@@ -235,6 +241,12 @@ class Login extends React.Component {
           <span className="item"><Link to="/">아이디 찾기</Link></span>
           <span className="item"><Link to="/">비밀번호 찾기</Link></span>
         </div>
+        {showAlertPopup && (
+          <AlertPopup
+            popupMsg={popupMsg}
+            popupCallback={popupCallback}
+          />
+        )}
         {isLoading && <LoadingBar />}
       </div>
     );

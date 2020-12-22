@@ -1,0 +1,49 @@
+.create-member {
+  margin: auto;
+  padding: 30px;
+  width: 380px;
+  text-align: left;
+  background-color: #eeeeee;
+  border-radius: 5pt;
+}
+
+.create-member label {
+  color: #888888;
+  font-size: 0.8em;
+  font-weight: bold;
+}
+
+.create-member label.req::after {
+  content: "*";
+  color: red;
+}
+
+.create-member input::placeholder {
+  font-size: 0.8em;
+}
+
+.create-member input:focus {
+  border-color: #42b983;
+}
+
+.create-member input.error {
+  border-color: red;
+}
+
+.create-member input.error::placeholder {
+  color: red;
+}
+
+.create-member #create-member-btn {
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+.create-member a {
+  color: #aaaaaa;
+  text-decoration-color: black;
+}
+
+.create-member span:not(:last-child)::after {
+  content: " | ";
+}
