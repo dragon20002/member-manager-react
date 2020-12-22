@@ -138,6 +138,47 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/t
 
 > 참고 [ki_blank.log](https://velog.io/@ki_blank/React-Router-1.-8njzuummrs)
 
+### [Scoped CSS](https://create-react-app.dev/docs/adding-a-css-modules-stylesheet/)
+
+0. 제약사항
+
+- create-react-app으로 생성한 eject 명령을 실행하지 않은 프로젝트인 경우만 해당
+
+- react-script@2.0.0 이상
+
+1. 사용법
+
+- Button.module.css (or scss, sass)
+
+    ```css
+    .error {
+      background-color: red;
+    }
+    ```
+
+- Button.css
+
+    ```css
+    .error {
+      color: red;
+    }
+    ```
+
+- Button.js
+
+    ```js
+    import React, { Component } from 'react';
+    import styles from './Button.module.css'; // Import css modules stylesheet as styles
+    import './another-stylesheet.css'; // Import regular stylesheet
+
+    class Button extends Component {
+      render() {
+        // reference as a js object
+        return <button className={styles.error}>Error Button</button>;
+      }
+    }
+    ```
+
 ## Front-End 프레임워크 고민할 점
 
 ### 서버 Session을 사용할 수 없다.
