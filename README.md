@@ -70,7 +70,7 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/d
 This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
 
 
-## Issues
+## Study
 
 ### React Router
 
@@ -202,8 +202,6 @@ $ npm i prop-types
 
 0. 제약사항
 
-- create-react-app으로 생성한 eject 명령을 실행하지 않은 프로젝트인 경우만 해당
-
 - react-script@2.0.0 이상
 
 1. 사용법
@@ -243,11 +241,11 @@ $ npm i prop-types
 
 0. 용어 설명
 
-- ***컨테이너*** 어플리케이션을 실행할 수 있는 가상컴퓨팅 자원 또는 공간
+- ***컨테이너*** : 어플리케이션을 실행할 수 있는 가상컴퓨팅 자원 또는 공간
 
-- ***도커 이미지*** `컨테이너`를 생성하기 위한 실행 이미지 파일 (템플릿?)
+- ***도커 이미지*** : *컨테이너*를 생성하기 위한 실행 이미지 파일 (템플릿?)
 
-- ***Dockerfile*** `도커 이미지`를 빌드하는 스크립트 (`Makefile` 같은 빌드 스크립트)
+- ***Dockerfile*** : *도커 이미지*를 빌드하는 스크립트 (`Makefile` 같은 빌드 스크립트)
 
 1. [Dockerfile](./Dockerfile) 작성
 
@@ -273,7 +271,7 @@ EXPOSE 8081
 CMD npm run serve
 ```
 
-2. `Build`
+2. Build
 
 Dockerfile을 로드하여 Docker image를 빌드한다.
 
@@ -295,9 +293,9 @@ $ docker images
 | --rm=true |          이미지 생성에 성공했을 때 임시 컨테이너를 삭제합니다. |
 | -t, --tag=""<br> | 저장소 이름, 이미지 이름, 태그를 설정합니다. <저장소 이름>/<이미지 이름>:<태그> 형식입니다. |
 
-> Tag 예시 : 1) `hello`&nbsp;&nbsp;&nbsp;&nbsp;2) `hello:0.1`&nbsp;&nbsp;&nbsp;&nbsp;3) `exampleuser/hello`&nbsp;&nbsp;&nbsp;&nbsp;4) `exampleuser/hello:0.1`
+> Tag 예시 : - `hello`&nbsp;&nbsp;&nbsp;&nbsp;- `hello:0.1`&nbsp;&nbsp;&nbsp;&nbsp;- `exampleuser/hello`&nbsp;&nbsp;&nbsp;&nbsp;- `exampleuser/hello:0.1`
 
-3. `Run`
+3. Run
 
 빌드한 Docker image로 Docker Container 실행
 
@@ -335,6 +333,9 @@ $ docker ps -a
 # 컨테이너 시작/정지/재시작
 $ docker start/stop/restart {컨테이너 Id or Name}
 
+# 컨테이너 로그 확인
+$ docker logs --tail 20 {컨테이너 Id or Name}
+
 # 컨테이너 접속
 #   접속 종료 시 `Ctrl+p` `Ctrl+q` 순서대로 입력
 #   컨테이너 종료 시 `exit` or `Ctrl+d`
@@ -344,17 +345,17 @@ $ docker attach {컨테이너 Id or Name}
 $ docker rm {컨테이너 Id or Name}
 ```
 
-> 출처<br />
+> *출처*<br />
 > [pyrasis.com | 가장 빨리 만나는 Docker 20장 - 2. build](http://pyrasis.com/book/DockerForTheReallyImpatient/Chapter20/02)<br />
 > [velog@wlsdud2194 | Docker 도커 - #1 기본 명령어 모음](https://velog.io/@wlsdud2194/-Docker-%EB%8F%84%EC%BB%A4-%EA%B8%B0%EB%B3%B8-%EB%AA%85%EB%A0%B9%EC%96%B4-%EB%AA%A8%EC%9D%8C)
 
 ## Front-End 프레임워크 고민할 점
 
-### `서버 Session을 사용불가`
+### 서버 Session 사용불가
 
 로그인 기능 구현 시, 로그인된 사용자 정보를 서버 Session에 저장할 수 없어 JWT (JSON Web Token)을 사용하는 등 매요청마다 Front-End에서 로그인된 사용자임을 인증할 수단이 필요하다.
 
-### `CSR vs SSR 결정`
+### CSR vs SSR 결정
 
 CSR의 경우, 사이트가 가진 정보를 검색엔진에 노출시키기 어렵다.
 
@@ -364,5 +365,5 @@ CSR의 경우, 사이트가 가진 정보를 검색엔진에 노출시키기 어
 
 - 일반적으로 Front-End 프레임워크는 CSR에 해당하며 프레임워크가 직접 지원하거나 외부 라이브러리를 사용하여 SSR로 만들 수 있다.
 
-> 출처<br />
+> *출처*<br />
 > https://velog.io/@aaronddy/React-session-
