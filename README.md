@@ -108,6 +108,9 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/t
     ```
 
   - `Link`
+
+    상단 메뉴의 경우, `NavLink` 사용을 추천. (선택된 Link에 active 스타일을 적용됨)
+
     ```js
     // Components/HeaderMenu.js
     import React from 'react';
@@ -134,7 +137,6 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/t
 
     export default HeaderMenu;
     ```
-
 
 > 참고 [ki_blank.log](https://velog.io/@ki_blank/React-Router-1.-8njzuummrs)
 
@@ -237,13 +239,124 @@ $ npm i prop-types
     }
     ```
 
+### Docker 사용법
+
+0. 용어 설명
+
+- ***컨테이너*** 어플리케이션을 실행할 수 있는 가상컴퓨팅 자원 또는 공간
+
+- ***도커 이미지*** `컨테이너`를 생성하기 위한 실행 이미지 파일 (템플릿?)
+
+- ***Dockerfile*** `도커 이미지`를 빌드하는 스크립트 (`Makefile` 같은 빌드 스크립트)
+
+1. [Dockerfile](./Dockerfile) 작성
+
+```Dockerfile
+# Node 최신버전 이미지를 가져옴 (pull)
+FROM node:latest
+MAINTAINER dragon20002@naver.com
+
+# 컨테이너로 소스 복사
+# .dockerignore 파일을 생성하여 대상에서 제외시킬 수 있음 (build/, node_modules/ 등...)
+COPY . /usr/src/member-manager
+
+# 컨테이너의 현재경로 변경
+WORKDIR /usr/src/member-manager
+
+# 소스 빌드, 의존성 설치 등등의 작업수행
+RUN npm install
+
+# 컨테이너의 포트 열기
+EXPOSE 8081
+
+# 어플리케이션 실행
+CMD npm run serve
+```
+
+2. `Build`
+
+Dockerfile을 로드하여 Docker image를 빌드한다.
+
+```bash
+# Dockerfile이 있는 위치에서 아래 커맨드 실행
+$ docker build -t member-manager
+
+# (선택) 빌드된 이미지 목록 확인
+$ docker images
+```
+
+- 자주 사용하는 옵션
+
+| 옵션 | 설명 |
+| - | - |
+| --force-rm=false | 이미지 생성에 실패했을 때도 임시 컨테이너를 삭제합니다. |
+| --no-cache=false | 이전 빌드에서 생성된 캐시를 사용하지 않습니다. Docker는 이미지 생성 시간을 줄이기 위해서 Dockerfile의 각 과정을 캐시하는데, 이 캐시를 사용하지 않고 처음부터 다시 이미지를 생성합니다. |
+| -q, --quiet=false | Dockerfile의 RUN이 실행한 출력 결과를 표시하지 않습니다. |
+| --rm=true |          이미지 생성에 성공했을 때 임시 컨테이너를 삭제합니다. |
+| -t, --tag=""<br> | 저장소 이름, 이미지 이름, 태그를 설정합니다. <저장소 이름>/<이미지 이름>:<태그> 형식입니다. |
+
+> Tag 예시 : 1) `hello`&nbsp;&nbsp;&nbsp;&nbsp;2) `hello:0.1`&nbsp;&nbsp;&nbsp;&nbsp;3) `exampleuser/hello`&nbsp;&nbsp;&nbsp;&nbsp;4) `exampleuser/hello:0.1`
+
+3. `Run`
+
+빌드한 Docker image로 Docker Container 실행
+
+```bash
+# `member-manager` 이미지 태그를 가진 이미지로 컨테이너를 생성 및 실행
+$ docker run -d -p {prefer_port}:8081 member-manager
+
+# (선택) 컨테이너 목록 및 상태 확인
+$ docker ps -a
+```
+
+- 실행 결과
+
+![docker-ps-result](readme_img/docker-ps-result.png)
+
+- 자주 사용하는 옵션
+
+| 옵션 | 설명 |
+| - | - |
+| -d | detached mode 흔히 말하는 백그라운드 모드 |
+| -p | 호스트와 컨테이너의 포트를 연결 (포워딩) |
+| -v | 호스트와 컨테이너의 디렉토리를 연결 (마운트) |
+| -e | 컨테이너 내에서 사용할 환경변수 설정 |
+| --name | 컨테이너 이름 설정 |
+| --it | -i와 -t를 동시에 사용한 것으로 터미널 입력을 위한 옵션 (컨테이너의 표준 입력과 로컬 컴퓨터의 키보드 입력을 연결) |
+| --rm | 프로세스 종료시 컨테이너 자동 제거 |
+| --link | 컨테이너 연결 [컨테이너 명:별칭] |
+
+4. 관리 및 모니터링
+
+```bash
+# 모든 컨테이너 확인
+$ docker ps -a
+
+# 컨테이너 시작/정지/재시작
+$ docker start/stop/restart {컨테이너 Id or Name}
+
+# 컨테이너 접속
+#   접속 종료 시 `Ctrl+p` `Ctrl+q` 순서대로 입력
+#   컨테이너 종료 시 `exit` or `Ctrl+d`
+$ docker attach {컨테이너 Id or Name}
+
+# 컨테이너 제거
+$ docker rm {컨테이너 Id or Name}
+```
+
+> 출처<br />
+> [pyrasis.com | 가장 빨리 만나는 Docker 20장 - 2. build](http://pyrasis.com/book/DockerForTheReallyImpatient/Chapter20/02)<br />
+> [velog@wlsdud2194 | Docker 도커 - #1 기본 명령어 모음](https://velog.io/@wlsdud2194/-Docker-%EB%8F%84%EC%BB%A4-%EA%B8%B0%EB%B3%B8-%EB%AA%85%EB%A0%B9%EC%96%B4-%EB%AA%A8%EC%9D%8C)
+
 ## Front-End 프레임워크 고민할 점
 
-### 서버 Session을 사용할 수 없다.
+### `서버 Session을 사용불가`
 
-- 로그인 기능 구현 시, 로그인된 사용자 정보를 서버 Session에 저장할 수 없어 JWT (JSON Web Token)을 사용하는 등 매요청마다 Front-End에서 로그인된 사용자임을 인증할 수단이 필요하다.
+로그인 기능 구현 시, 로그인된 사용자 정보를 서버 Session에 저장할 수 없어 JWT (JSON Web Token)을 사용하는 등 매요청마다 Front-End에서 로그인된 사용자임을 인증할 수단이 필요하다.
 
-### CSR vs SSR 결정. 사이트가 가진 정보를 검색엔진에 노출시키기 어렵다.
+### `CSR vs SSR 결정`
+
+CSR의 경우, 사이트가 가진 정보를 검색엔진에 노출시키기 어렵다.
 
 - client side rendering(CSR): SPI로 구성되어 있어서 html로 들어가도 자료, 정보에 대한 내용 없이 div 태그 하나.. 덩그러니 있어서 의미있는 정보나 자료를 구할 수 없음. 이 부분이 문제점이라고 할 수 있음. 사이트가 검색 노출이 덜 됨. 키워드를 올려도. 구글봇이 내용인식을 못하므로. =======> 백엔드와 프론트엔드가 완전히 분리될 수 밖에 없는 이유.
 
@@ -251,4 +364,5 @@ $ npm i prop-types
 
 - 일반적으로 Front-End 프레임워크는 CSR에 해당하며 프레임워크가 직접 지원하거나 외부 라이브러리를 사용하여 SSR로 만들 수 있다.
 
+> 출처<br />
 > https://velog.io/@aaronddy/React-session-
