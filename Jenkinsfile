@@ -4,7 +4,7 @@ node {
 
   stage('Clone repository') {
     /* clone 확인 */
-    check scm
+    checkout scm
   }
 
   stage('Build image') {
