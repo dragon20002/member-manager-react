@@ -1,6 +1,10 @@
+# 실행 명령어
+#   $ docker build -t {image_tag} .
+#   $ docker run -d -p {prefer_port}:8081 {image_tag}
+
 # Create Node Docker container
 FROM node:latest
-MAINTAINER dragon20002@naver.com
+MAINTAINER tairian20002@gmail.com
 
 # Copy sources to container
 COPY . /usr/src/app

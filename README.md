@@ -243,7 +243,7 @@ $ npm i prop-types
 
 - ***컨테이너*** : 어플리케이션을 실행할 수 있는 가상컴퓨팅 자원 또는 공간
 
-- ***도커 이미지*** : *컨테이너*를 생성하기 위한 실행 이미지 파일 (템플릿?)
+- ***이미지*** : *컨테이너*를 생성하기 위한 실행 이미지 파일 (템플릿?)
 
 - ***Dockerfile*** : *도커 이미지*를 빌드하는 스크립트 (`Makefile` 같은 빌드 스크립트)
 
@@ -273,11 +273,11 @@ CMD npm run serve
 
 2. Build
 
-Dockerfile을 로드하여 Docker image를 빌드한다.
+*Dockerfile*을 로드하여 *이미지*를 빌드한다.
 
 ```bash
 # Dockerfile이 있는 위치에서 아래 커맨드 실행
-$ docker build -t member-manager
+$ docker build -t member-manager .
 
 # (선택) 빌드된 이미지 목록 확인
 $ docker images
@@ -297,7 +297,7 @@ $ docker images
 
 3. Run
 
-빌드한 Docker image로 Docker Container 실행
+*이미지*로 *컨테이너*를 실행한다.
 
 ```bash
 # `member-manager` 이미지 태그를 가진 이미지로 컨테이너를 생성 및 실행
@@ -307,15 +307,11 @@ $ docker run -d -p {prefer_port}:8081 member-manager
 $ docker ps -a
 ```
 
-- 실행 결과
-
-![docker-ps-result](readme_img/docker-ps-result.png)
-
 - 자주 사용하는 옵션
 
 | 옵션 | 설명 |
 | - | - |
-| -d | detached mode 흔히 말하는 백그라운드 모드 |
+| -d | detached mode (백그라운드 모드) |
 | -p | 호스트와 컨테이너의 포트를 연결 (포워딩) |
 | -v | 호스트와 컨테이너의 디렉토리를 연결 (마운트) |
 | -e | 컨테이너 내에서 사용할 환경변수 설정 |
@@ -324,9 +320,22 @@ $ docker ps -a
 | --rm | 프로세스 종료시 컨테이너 자동 제거 |
 | --link | 컨테이너 연결 [컨테이너 명:별칭] |
 
+- 실행 결과
+
+![docker-ps-result](readme_img/docker-ps-result.png)
+
 4. 관리 및 모니터링
 
 ```bash
+# 모든 이미지 확인
+$ docker images
+
+# 이미지 업로드/다운로드 (hub.docker.com)
+$ docker push/pull {이미지 Tag}
+
+# 이미지 삭제
+$ docker rmi {이미지 Tag}
+
 # 모든 컨테이너 확인
 $ docker ps -a
 
@@ -337,17 +346,72 @@ $ docker start/stop/restart {컨테이너 Id or Name}
 $ docker logs --tail 20 {컨테이너 Id or Name}
 
 # 컨테이너 접속
-#   접속 종료 시 `Ctrl+p` `Ctrl+q` 순서대로 입력
-#   컨테이너 종료 시 `exit` or `Ctrl+d`
+#   접속 종료 : `Ctrl+p`, `Ctrl+q` 순서대로 입력
+#   컨테이너 종료 : `exit` or `Ctrl+d`
 $ docker attach {컨테이너 Id or Name}
 
 # 컨테이너 제거
 $ docker rm {컨테이너 Id or Name}
 ```
 
+5. 그외
+
+- ***docker-compose.yml*** : *컨테이너* 간 조합/통신이 필요할 때 한번에 여러 컨테이너를 생성할 수 있다.
+
+```yml
+# docker-compose.yml
+version: '2'
+
+services:
+  # A 컨테이너
+  db:
+    image: mysql:5.7
+    volumes:
+      - db_data:/var/lib/mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: wordpress
+      MYSQL_DATABASE: wordpress
+      MYSQL_USER: wordpress
+      MYSQL_PASSWORD: wordpress
+
+  # B 컨테이너
+  wordpress:
+    depends_on:
+      - db
+    image: wordpress:latest
+    volumes:
+      - wp_data:/var/www/html
+    ports:
+      - "8000:80"
+    restart: always
+    environment:
+      WORDPRESS_DB_HOST: db:3306
+      WORDPRESS_DB_PASSWORD: wordpress
+```
+
+```bash
+# 위와 같이 설정파일을 작성 후 명령 실행
+$ docker-compose up
+
+# 목록
+$ docker-compose ps
+
+# 중지/삭제/로그
+$ docker-compose stop/down/logs
+
+# 컨테이너 중지 & 제거
+$ docker system prune -a
+```
+
 > *출처*<br />
 > [pyrasis.com | 가장 빨리 만나는 Docker 20장 - 2. build](http://pyrasis.com/book/DockerForTheReallyImpatient/Chapter20/02)<br />
-> [velog@wlsdud2194 | Docker 도커 - #1 기본 명령어 모음](https://velog.io/@wlsdud2194/-Docker-%EB%8F%84%EC%BB%A4-%EA%B8%B0%EB%B3%B8-%EB%AA%85%EB%A0%B9%EC%96%B4-%EB%AA%A8%EC%9D%8C)
+> [velog@wlsdud2194 | Docker 도커 - #1 기본 명령어 모음](https://velog.io/@wlsdud2194/-Docker-%EB%8F%84%EC%BB%A4-%EA%B8%B0%EB%B3%B8-%EB%AA%85%EB%A0%B9%EC%96%B4-%EB%AA%A8%EC%9D%8C)<br />
+> [초보를 위한 도커 안내서 - 설치하고 컨테이너 실행하기](https://subicura.com/2017/01/19/docker-guide-for-beginners-2.html)
+
+### Kubernetes 시작
+
+> [HowToDo.cloud | Jenkins 이용하여 Docker Image 만들기](https://www.howtodo.cloud/devops/docker/2019/05/16/devops-application.html)
 
 ## Front-End 프레임워크 고민할 점
 
