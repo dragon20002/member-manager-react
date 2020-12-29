@@ -2,7 +2,7 @@ import axios from 'axios';
 
 let $axios = null;
 
-function BaseAxios() {
+function Client() {
   if (!$axios) {
     $axios = axios.create({
       baseURL: `${process.env.REACT_APP_HOST}`,
@@ -17,4 +17,4 @@ function BaseAxios() {
   return $axios;
 }
 
-export default BaseAxios;
+export default Client;

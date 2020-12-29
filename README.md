@@ -69,12 +69,12 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/d
 
 This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
 
-
 ## Study
 
 ### React Router
 
 - 설치
+
   ```bash
   npm install react-router-dom
   ```
@@ -82,6 +82,7 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/t
 - 사용법
 
   - `BrowserRouter`, `Switch`, `Route`
+
     ```js
     // Components/SomeView.js
     import React from 'react';
@@ -113,7 +114,7 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/t
 
     ```js
     // Components/HeaderMenu.js
-    import React from 'react';
+    import React from "react";
     import { Link } from "react-router-dom";
 
     function HeaderMenu() {
@@ -132,7 +133,7 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/t
             </li>
           </ul>
         </div>
-      )
+      );
     }
 
     export default HeaderMenu;
@@ -140,11 +141,52 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/t
 
 > 참고 [ki_blank.log](https://velog.io/@ki_blank/React-Router-1.-8njzuummrs)
 
-### ESLint
+### React Redux
+
+- dependencies
+
+```bash
+$ npm i redux, redux-actions redux-saga redux-devtools-extension
+```
+
+- 디렉터리
+
+  - components : `Presentational Component`. Redux를 사용하기 전의 컴포넌트가 비즈니스 로직도 포함했던 것과 달리, *Presentational Component*는 비즈니스 로직을 *Container*로 분리하여 HTML을 보여주거나 사용자의 입력을 받는 View의 역할만 담당한다.
+  - containers : *Presentational Component*들을 감싼 컴포넌트. store에 접근하여 조회한 데이터와 Action을 감싸고 있는 컴포넌트에 전달한다. 주로 다음과 같은 뷰를 이와 같이 구현한다.
+
+    - 페이지
+    - 리스트
+    - 헤더
+    - 사이드바
+    - 내부의 컴포넌트 때문에 props가 여러 컴포넌트를 거쳐야 하는 경우
+
+  - reducers : store의 기본상태 및 state 변경을 담당한다.
+  - lib 또는 utils : 공통기능
+
+- 프로젝트 적용
+
+  - src/reducers/index.js
+  - src/index.jsx
+
+- 개발 플로우
+
+  API → Reducer → Container → Component
+
+- **_작성중..._**
+
+> _출처_<br /> > [VELOPERT.LOG | Redux 를 통한 React 어플리케이션 상태 관리 :: 1장. 카운터 만들기](https://velopert.com/3346)<br /> > [reactkr | redux-saga로 비동기처리와 분투하다.](https://github.com/reactkr/learn-react-in-korean/blob/master/translated/deal-with-async-process-by-redux-saga.md)
+
+### ESLint + Prettier
+
+0. ESLint, Prettier로 추가할 기능 목록
+
+- *ESLint*로 코딩 포맷을 정의하여 가독성 향상
+- *Prettier*로 자동 포맷팅
+- 편집기의 _saveOnFormat_ 설정으로 파일 저장 시 자동 포맷팅
 
 1. 설치
 
-```
+```bash
 $ npm i -D eslint eslint-config-airbnb eslint-plugin-import eslint-plugin-jsx-a11y eslint-plugin-react eslint-plugin-react-hooks
 
 # eslint 중 prop type 명시할 때 사용. TypeScript 사용시 안해도 됨.
@@ -158,43 +200,56 @@ $ npm i prop-types
 
 2. 설정
 
-- {root}/.editorconfig (VSCode 설정)
+- {root}/.prettierrc (Prettier 설정)
 
-    ```properties
-    [*.{js,jsx,ts,tsx,jsx}]
-    indent_style = space
-    indent_size = 2
-    end_of_line = crlf
-    trim_trailing_whitespace = true
-    insert_final_newline = true
-    max_line_length = 100
-    quote_type = single
-    spaces_around_brackets = inside
-    ```
+  ```json
+  {
+    "overrides": [
+      {
+        "files": "*.{js,jsx,ts,tsx,jsx}",
+        "options": {
+          "bracketSpacing": true,
+          "endOfLine": "crlf",
+          "jsxBracketSameLine": false,
+          "jsxSingleQuote": false,
+          "printWidth": 100,
+          "semi": true,
+          "singleQuote": true,
+          "tabWidth": 2,
+          "trailingComma": "all",
+          "useTabs": false
+        }
+      }
+    ]
+  }
+  ```
 
 - {root}/.eslintrc (ESLint 설정)
 
-    ```json
-    {
-      "env": {
-        "browser": true,
-        "es6": true,
-        "node": true
-      },
-      "parser": "babel-eslint",
-      "parserOptions": {
-        "sourceType": "module",
-        "allowImportExportEverywhere": true
-      },
-      "extends": ["airbnb"],
-      "rules": {
-        "linebreak-style": 0,
-        "jsx-a11y/label-has-associated-control": 0,
-        "class-methods-use-this": 0,
-        "jsx-a11y/no-static-element-interactions": 0
-      }
+  ```json
+  {
+    "env": {
+      "browser": true,
+      "es6": true,
+      "node": true
+    },
+    "parser": "babel-eslint",
+    "parserOptions": {
+      "sourceType": "module",
+      "allowImportExportEverywhere": true
+    },
+    "extends": ["airbnb"],
+    "rules": {
+      "linebreak-style": 0,
+      "jsx-a11y/label-has-associated-control": 0,
+      "class-methods-use-this": 0,
+      "jsx-a11y/no-static-element-interactions": 0,
+      "object-curly-newline": 0
     }
-    ```
+  }
+  ```
+
+- VSCode 설정 (`Ctrl + ,`)에서 _formatOnSave_ 검색하여 체크
 
 - VSCode 우측하단 ESLint, Prettier 활성화
 
@@ -208,44 +263,44 @@ $ npm i prop-types
 
 - Button.module.css (or scss, sass)
 
-    ```css
-    .error {
-      background-color: red;
-    }
-    ```
+  ```css
+  .error {
+    background-color: red;
+  }
+  ```
 
 - Button.css
 
-    ```css
-    .error {
-      color: red;
-    }
-    ```
+  ```css
+  .error {
+    color: red;
+  }
+  ```
 
 - Button.js
 
-    ```js
-    import React, { Component } from 'react';
-    import styles from './Button.module.css'; // Import css modules stylesheet as styles
-    import './another-stylesheet.css'; // Import regular stylesheet
+  ```js
+  import React, { Component } from "react";
+  import styles from "./Button.module.css"; // Import css modules stylesheet as styles
+  import "./another-stylesheet.css"; // Import regular stylesheet
 
-    class Button extends Component {
-      render() {
-        // reference as a js object
-        return <button className={styles.error}>Error Button</button>;
-      }
+  class Button extends Component {
+    render() {
+      // reference as a js object
+      return <button className={styles.error}>Error Button</button>;
     }
-    ```
+  }
+  ```
 
 ### Docker 사용법
 
 0. 용어 설명
 
-- ***컨테이너*** : 어플리케이션을 실행할 수 있는 가상컴퓨팅 자원 또는 공간
+- **_컨테이너_** : 어플리케이션을 실행할 수 있는 가상컴퓨팅 자원 또는 공간
 
-- ***이미지*** : *컨테이너*를 생성하기 위한 실행 이미지 파일 (템플릿?)
+- **_이미지_** : *컨테이너*를 생성하기 위한 실행 이미지 파일 (템플릿?)
 
-- ***Dockerfile*** : *도커 이미지*를 빌드하는 스크립트 (`Makefile` 같은 빌드 스크립트)
+- **_Dockerfile_** : *도커 이미지*를 빌드하는 스크립트 (`Makefile` 같은 빌드 스크립트)
 
 1. [Dockerfile](./Dockerfile) 작성
 
@@ -285,13 +340,13 @@ $ docker images
 
 - 자주 사용하는 옵션
 
-| 옵션 | 설명 |
-| - | - |
-| --force-rm=false | 이미지 생성에 실패했을 때도 임시 컨테이너를 삭제합니다. |
-| --no-cache=false | 이전 빌드에서 생성된 캐시를 사용하지 않습니다. Docker는 이미지 생성 시간을 줄이기 위해서 Dockerfile의 각 과정을 캐시하는데, 이 캐시를 사용하지 않고 처음부터 다시 이미지를 생성합니다. |
-| -q, --quiet=false | Dockerfile의 RUN이 실행한 출력 결과를 표시하지 않습니다. |
-| --rm=true |          이미지 생성에 성공했을 때 임시 컨테이너를 삭제합니다. |
-| -t, --tag=""<br> | 저장소 이름, 이미지 이름, 태그를 설정합니다. <저장소 이름>/<이미지 이름>:<태그> 형식입니다. |
+| 옵션              | 설명                                                                                                                                                                                   |
+| ----------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| --force-rm=false  | 이미지 생성에 실패했을 때도 임시 컨테이너를 삭제합니다.                                                                                                                                |
+| --no-cache=false  | 이전 빌드에서 생성된 캐시를 사용하지 않습니다. Docker는 이미지 생성 시간을 줄이기 위해서 Dockerfile의 각 과정을 캐시하는데, 이 캐시를 사용하지 않고 처음부터 다시 이미지를 생성합니다. |
+| -q, --quiet=false | Dockerfile의 RUN이 실행한 출력 결과를 표시하지 않습니다.                                                                                                                               |
+| --rm=true         | 이미지 생성에 성공했을 때 임시 컨테이너를 삭제합니다.                                                                                                                                  |
+| -t, --tag=""<br>  | 저장소 이름, 이미지 이름, 태그를 설정합니다. <저장소 이름>/<이미지 이름>:<태그> 형식입니다.                                                                                            |
 
 > Tag 예시 : - `hello`&nbsp;&nbsp;&nbsp;&nbsp;- `hello:0.1`&nbsp;&nbsp;&nbsp;&nbsp;- `exampleuser/hello`&nbsp;&nbsp;&nbsp;&nbsp;- `exampleuser/hello:0.1`
 
@@ -309,16 +364,16 @@ $ docker ps -a
 
 - 자주 사용하는 옵션
 
-| 옵션 | 설명 |
-| - | - |
-| -d | detached mode (백그라운드 모드) |
-| -p | 호스트와 컨테이너의 포트를 연결 (포워딩) |
-| -v | 호스트와 컨테이너의 디렉토리를 연결 (마운트) |
-| -e | 컨테이너 내에서 사용할 환경변수 설정 |
-| --name | 컨테이너 이름 설정 |
-| --it | -i와 -t를 동시에 사용한 것으로 터미널 입력을 위한 옵션 (컨테이너의 표준 입력과 로컬 컴퓨터의 키보드 입력을 연결) |
-| --rm | 프로세스 종료시 컨테이너 자동 제거 |
-| --link | 컨테이너 연결 [컨테이너 명:별칭] |
+| 옵션   | 설명                                                                                                             |
+| ------ | ---------------------------------------------------------------------------------------------------------------- |
+| -d     | detached mode (백그라운드 모드)                                                                                  |
+| -p     | 호스트와 컨테이너의 포트를 연결 (포워딩)                                                                         |
+| -v     | 호스트와 컨테이너의 디렉토리를 연결 (마운트)                                                                     |
+| -e     | 컨테이너 내에서 사용할 환경변수 설정                                                                             |
+| --name | 컨테이너 이름 설정                                                                                               |
+| --it   | -i와 -t를 동시에 사용한 것으로 터미널 입력을 위한 옵션 (컨테이너의 표준 입력과 로컬 컴퓨터의 키보드 입력을 연결) |
+| --rm   | 프로세스 종료시 컨테이너 자동 제거                                                                               |
+| --link | 컨테이너 연결 [컨테이너 명:별칭]                                                                                 |
 
 - 실행 결과
 
@@ -356,11 +411,11 @@ $ docker rm {컨테이너 Id or Name}
 
 5. 그외
 
-- ***docker-compose.yml*** : *컨테이너* 간 조합/통신이 필요할 때 한번에 여러 컨테이너를 생성할 수 있다.
+- **_docker-compose.yml_** : _컨테이너_ 간 조합/통신이 필요할 때 한번에 여러 컨테이너를 생성할 수 있다.
 
 ```yml
 # docker-compose.yml
-version: '2'
+version: "2"
 
 services:
   # A 컨테이너
@@ -404,12 +459,35 @@ $ docker-compose stop/down/logs
 $ docker system prune -a
 ```
 
-> *출처*<br />
-> [pyrasis.com | 가장 빨리 만나는 Docker 20장 - 2. build](http://pyrasis.com/book/DockerForTheReallyImpatient/Chapter20/02)<br />
-> [velog@wlsdud2194 | Docker 도커 - #1 기본 명령어 모음](https://velog.io/@wlsdud2194/-Docker-%EB%8F%84%EC%BB%A4-%EA%B8%B0%EB%B3%B8-%EB%AA%85%EB%A0%B9%EC%96%B4-%EB%AA%A8%EC%9D%8C)<br />
-> [초보를 위한 도커 안내서 - 설치하고 컨테이너 실행하기](https://subicura.com/2017/01/19/docker-guide-for-beginners-2.html)
+> _출처_<br /> > [pyrasis.com | 가장 빨리 만나는 Docker 20장 - 2. build](http://pyrasis.com/book/DockerForTheReallyImpatient/Chapter20/02)<br /> > [velog@wlsdud2194 | Docker 도커 - #1 기본 명령어 모음](https://velog.io/@wlsdud2194/-Docker-%EB%8F%84%EC%BB%A4-%EA%B8%B0%EB%B3%B8-%EB%AA%85%EB%A0%B9%EC%96%B4-%EB%AA%A8%EC%9D%8C)<br /> > [초보를 위한 도커 안내서 - 설치하고 컨테이너 실행하기](https://subicura.com/2017/01/19/docker-guide-for-beginners-2.html)
 
 ### Kubernetes 시작
+
+- Jenkins 설치
+
+- 추가 플러그인 설치
+
+  *Dashboard > Jenkins 관리 > 플러그인 관리*에서 아래 플러그인을 검색하여 설치
+
+  - Docker Pipeline : Jenkins Pipeline 스크립트 작성 시 docker를 사용할 수 있음
+
+- Jenkinsfile => **_아래 소스 테스트해볼 것!_**
+
+```groovy
+/* Jenkins Pipeline 실행스크립트 */
+pipeline {
+  agent {
+    dockerfile true
+  }
+  stages {
+    stage('Test') {
+      steps {
+        sh 'node --version'
+      }
+    }
+  }
+}
+```
 
 > [HowToDo.cloud | Jenkins 이용하여 Docker Image 만들기](https://www.howtodo.cloud/devops/docker/2019/05/16/devops-application.html)
 
@@ -429,5 +507,4 @@ CSR의 경우, 사이트가 가진 정보를 검색엔진에 노출시키기 어
 
 - 일반적으로 Front-End 프레임워크는 CSR에 해당하며 프레임워크가 직접 지원하거나 외부 라이브러리를 사용하여 SSR로 만들 수 있다.
 
-> *출처*<br />
-> https://velog.io/@aaronddy/React-session-
+> _출처_<br /> > https://velog.io/@aaronddy/React-session-

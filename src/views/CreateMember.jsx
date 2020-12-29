@@ -5,7 +5,7 @@ import { Link, withRouter } from 'react-router-dom';
 import './CreateMember.css';
 import AlertPopup from '../components/AlertPopup';
 import LoadingBar from '../components/LoadingBar';
-import BaseAxios from '../utils/axios';
+import Client from '../utils/api/client';
 
 class CreateMember extends React.Component {
   constructor(props) {
@@ -69,9 +69,7 @@ class CreateMember extends React.Component {
    * 사용자 입력 검증
    */
   validateInputs() {
-    const {
-      isMemberDup, userId, password, passwordRe,
-    } = this.state;
+    const { isMemberDup, userId, password, passwordRe } = this.state;
 
     // 1. required 체크
     const reqLabels = $('.create-member label.req');
@@ -208,7 +206,7 @@ class CreateMember extends React.Component {
     $('input[name=userId]').removeClass('error');
 
     this.setState({ isLoading: true });
-    BaseAxios()
+    Client()
       .post('/api/login/check-member-dup', { userId })
       .then((response) => {
         const result = Boolean(response.data);
@@ -255,13 +253,11 @@ class CreateMember extends React.Component {
     }
 
     const { history } = this.props;
-    const {
-      userId, password, passwordRe, name, email, telNo, address,
-    } = this.state;
+    const { userId, password, passwordRe, name, email, telNo, address } = this.state;
     let isMounted = true;
 
     this.setState({ isLoading: true });
-    BaseAxios()
+    Client()
       .post('/api/login/create-member', {
         userId,
         password,
@@ -310,9 +306,7 @@ class CreateMember extends React.Component {
   }
 
   render() {
-    const {
-      userId, password, passwordRe, name, email, telNo, address,
-    } = this.state;
+    const { userId, password, passwordRe, name, email, telNo, address } = this.state;
     const { isMemberDup, isLoading } = this.state;
     const { popupMsg, popupCallback, showAlertPopup } = this.state;
 

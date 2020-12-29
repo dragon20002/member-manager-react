@@ -1,7 +1,5 @@
 import React, { Suspense } from 'react';
-import {
-  BrowserRouter as Router, Switch, Route, Redirect,
-} from 'react-router-dom';
+import { BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-dom';
 import HeaderTop from './components/HeaderTop';
 import HeaderMenu from './components/HeaderMenu';
 import Home from './views/Home';
@@ -9,7 +7,7 @@ import ShowMembers from './views/ShowMembers';
 import About from './views/About';
 import CreateMember from './views/CreateMember';
 import Login from './views/Login';
-import BaseAxios from './utils/axios';
+import Client from './utils/api/client';
 import LoadingBar from './components/LoadingBar';
 import './App.css';
 
@@ -17,7 +15,7 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      axios: BaseAxios(),
+      axios: Client(),
       menus: [
         {
           id: 0,
@@ -91,13 +89,11 @@ class App extends React.Component {
 
   checkAuth() {
     this.setState({ isLoading: true });
-    BaseAxios()
+    Client()
       .get('/api/login/has-auth')
       .then((response) => {
         console.log('[App]', '/api/login/has-auth', response);
-        const {
-          hasAuth, loginType, token, imageUrl, name,
-        } = response.data;
+        const { hasAuth, loginType, token, imageUrl, name } = response.data;
 
         if (hasAuth) {
           this.handleLogin(loginType, { token, imageUrl, name });
@@ -113,9 +109,7 @@ class App extends React.Component {
   render() {
     console.log('[App]', 'render()');
     console.log('[App]', 'state = ', this.state);
-    const {
-      menus, hasAuth, imageUrl, name, isLoading,
-    } = this.state;
+    const { menus, hasAuth, imageUrl, name, isLoading } = this.state;
 
     return (
       <div id="app" className="App">
@@ -133,11 +127,7 @@ class App extends React.Component {
                 <Route path="/home" component={Home} />
                 <Route
                   path="/show-members"
-                  render={() => (
-                    <ShowMembers
-                      invalidateAuth={this.invalidateAuth}
-                    />
-                  )}
+                  render={() => <ShowMembers invalidateAuth={this.invalidateAuth} />}
                 />
                 <Route path="/about" component={About} />
                 <Route path="/create-member" component={CreateMember} />

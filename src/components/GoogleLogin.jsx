@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import LoadingBar from './LoadingBar';
-import BaseAxios from '../utils/axios';
+import Client from '../utils/api/client';
 import './GoogleLogin.css';
 import Logo from '../assets/google_logo.png';
 
@@ -28,7 +28,7 @@ class GoogleLogin extends React.Component {
 
     // Google query-string 검사
     const stateRegex = /state=([^&#/]+)/.exec(window.location.href);
-    if ((stateRegex) && (stateRegex.length > 1) && (stateRegex[1] === state)) {
+    if (stateRegex && stateRegex.length > 1 && stateRegex[1] === state) {
       const codeRegex = /code=([^&#/]+)/.exec(window.location.href);
       if (codeRegex) {
         if (codeRegex.length > 1) {
@@ -40,13 +40,11 @@ class GoogleLogin extends React.Component {
           };
 
           this.setState({ isLoading: true });
-          BaseAxios()
+          Client()
             .post('/api/login/oauth', params)
             .then((response) => {
               console.log('[GoogleLogin]', '/api/login/oauth', response);
-              const {
-                hasAuth, token, imageUrl, name,
-              } = response.data;
+              const { hasAuth, token, imageUrl, name } = response.data;
 
               if (hasAuth) {
                 isMounted = false;
@@ -84,9 +82,7 @@ class GoogleLogin extends React.Component {
   }
 
   render() {
-    const {
-      redirectUri, scope, clientId, state,
-    } = this.state;
+    const { redirectUri, scope, clientId, state } = this.state;
     const { isLoading } = this.state;
 
     return (
