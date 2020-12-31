@@ -1,5 +1,5 @@
 import { call, put } from 'react-redux/lib';
-import { startLoading, finishLoading } from '../reducers/loading';
+import { startLoading, finishLoading } from '../reducers/Loading';
 
 export const createRequestActionTypes = (type) => {
   const SUCCESS = `${type}_SUCCESS`;

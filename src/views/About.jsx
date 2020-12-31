@@ -1,4 +1,5 @@
 import React from 'react';
+import CounterContainer from '../containers/CounterContainer';
 import Style from './About.module.css';
 
 const About = () => (
@@ -11,6 +12,7 @@ const About = () => (
       <br />
       010-****-****
     </p>
+    <CounterContainer />
   </div>
 );
 

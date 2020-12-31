@@ -3,15 +3,15 @@ import { takeLatest } from 'redux-saga/effects';
 import createRequestSaga, { createRequestActionTypes } from '../../utils/createRequestSaga';
 import membersApi from '../../utils/api/members';
 
-// ----- Tag 생성 ---------------------------------------------- //
+// ----- ActionType 생성 ---------------------------------------------- //
 // -- `Action`을 구분할 수 있는 string 값
 
-// -- listMembers의 Tag 생성
+// -- listMembers의 ActionType 생성
 const [LIST_MEMBERS, LIST_MEMBERS_SUCCESS, LIST_MEMBERS_FAILURE] = createRequestActionTypes(
   'members/LIST_MEMBERS',
 );
 
-// -- unloadMembers의 Tag 생성
+// -- unloadMembers의 ActionType 생성
 const UNLOAD_MEMBERS = 'members/UNLOAD_MEMBERS';
 
 // ----- Action 생성 ------------------------------------------- //
@@ -40,7 +40,7 @@ const initialState = {
   error: null,
 };
 
-const members = handleActions(
+export default handleActions(
   {
     [LIST_MEMBERS_SUCCESS]: (state, { payload: members }) => ({
       ...state,
@@ -56,5 +56,3 @@ const members = handleActions(
   },
   initialState,
 );
-
-export default members;

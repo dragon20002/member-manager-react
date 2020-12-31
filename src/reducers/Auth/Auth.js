@@ -36,7 +36,7 @@ const initialState = {
   authError: null,
 };
 
-const auth = handleActions(
+export default handleActions(
   {
     [CHANGE_FIELD]: (state, { payload: { form, key, value } }) => {
       const formMap = state[form];
@@ -66,5 +66,3 @@ const auth = handleActions(
   },
   initialState,
 );
-
-export default auth;

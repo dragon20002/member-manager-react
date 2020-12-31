@@ -149,6 +149,15 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/t
 $ npm i redux, redux-actions redux-saga redux-devtools-extension
 ```
 
+- Ducks 패턴
+
+  한 모듈에 포함되는 ActionType, Action, Reducer를 하나의 파일에 만드는 방식
+
+  - `reducer`를 `export default` 해야함
+  - ActionCreator를 export 해야함
+  - ActionType 변수명은 `UPPER_SNAKE_CASE`, 값은 'npm-module'이나 'app/reducer/ACTION_TYPE' 이어야함
+  - ActionType을 export 해야함
+
 - 디렉터리
 
   - components : `Presentational Component`. Redux를 사용하기 전의 컴포넌트가 비즈니스 로직도 포함했던 것과 달리, *Presentational Component*는 비즈니스 로직을 *Container*로 분리하여 HTML을 보여주거나 사용자의 입력을 받는 View의 역할만 담당한다.

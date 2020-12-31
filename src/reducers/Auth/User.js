@@ -47,7 +47,7 @@ const initialState = {
   checkError: null,
 };
 
-const user = handleActions(
+export default handleActions(
   {
     [TEMP_SET_MEMBER]: (state, { payload: user }) => ({
       ...state,
@@ -73,5 +73,3 @@ const user = handleActions(
   },
   initialState,
 );
-
-export default user;
