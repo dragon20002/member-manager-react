@@ -1,20 +1,19 @@
 import { combineReducers } from 'redux';
-import { all } from 'react-redux/lib';
+import { all } from 'redux-saga/effects';
 import loading from './Loading';
-// import auth, { authSaga } from './Auth/Auth';
-// import user, { userSaga } from './Auth/User';
-// import members, { membersSaga } from './Members/Members';
+import auth, { authSaga } from './Auth/Auth';
+import user, { userSaga } from './Auth/User';
+import members, { membersSaga } from './Members/Members';
 import counter, { counterSaga } from './Counter';
 
 export function* rootSaga() {
-  // yield all([authSaga(), userSaga(), membersSaga(), counterSaga()]);
-  yield all([counterSaga()]);
+  yield all([authSaga(), userSaga(), membersSaga(), counterSaga()]);
 }
 
 export default combineReducers({
-  // auth,
-  // user,
+  auth,
+  user,
   loading,
-  // members,
+  members,
   counter,
 });

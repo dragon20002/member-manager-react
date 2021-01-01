@@ -22,11 +22,11 @@ class App extends React.Component {
           path: '/home',
           name: '메인',
         },
-        // {
-        //   id: 1,
-        //   path: '/show-members',
-        //   name: '회원관리',
-        // },
+        {
+          id: 1,
+          path: '/show-members',
+          name: '회원관리',
+        },
         {
           id: 1,
           path: '/about',

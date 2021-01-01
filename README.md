@@ -183,6 +183,10 @@ $ npm i redux, redux-actions redux-saga redux-devtools-extension
 
 - **_작성중..._**
 
+- 적용 중 발생했던 이슈
+
+  - reducers/index.js에서 redux-saga/effects의 all을 다른 라이브러리로 잘못 import하여 에러 발생
+
 > _출처_<br /> > [VELOPERT.LOG | Redux 를 통한 React 어플리케이션 상태 관리 :: 1장. 카운터 만들기](https://velopert.com/3346)<br /> > [reactkr | redux-saga로 비동기처리와 분투하다.](https://github.com/reactkr/learn-react-in-korean/blob/master/translated/deal-with-async-process-by-redux-saga.md)
 
 ### ESLint + Prettier
