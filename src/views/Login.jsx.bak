@@ -1,5 +1,5 @@
-import React from 'react';
-import LoginContainer from '../containers/Auth/LoginContainer';
+import React from "react";
+import LoginContainer from "./LoginContainer";
 
 const Login = () => <LoginContainer />;
 //   <div className="login">

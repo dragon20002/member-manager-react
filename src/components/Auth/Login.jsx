@@ -1,19 +1,43 @@
-import React, { useRef } from 'react';
-import PropTypes from 'prop-types';
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { changeField, initForm } from '../../reducers/Auth/Auth';
 
-const Login = ({
-  //   member,
-  form,
-  onChange,
-  //   onDismiss,
-  onSubmit,
-  //   visible,
-  saveUserId,
-  setSaveUserId,
-  //   errorMessage,
-}) => {
+const Login = () => {
+  const dispatch = useDispatch();
   //   const [showAlertPopup, setShowAlertPopup] = useState(false);
-  const userIdInput = useRef();
+
+  const { form } = useSelector(({ auth }) => ({
+    form: auth.login,
+  }));
+
+  useEffect(() => {
+    dispatch(initForm('login'));
+
+    const userId = localStorage.getItem('userId') || '';
+    if (userId) {
+      dispatch(changeField({ form: 'login', key: 'saveUserId', value: userId }));
+      dispatch(changeField({ form: 'login', key: 'userId', value: userId }));
+    }
+  }, [dispatch]);
+
+  const onChange = (e) => {
+    const { name, value } = e.target;
+    dispatch(changeField({ form: 'login', key: name, value }));
+  };
+
+  //   const onDismiss = () => {
+  //     setVisible(false);
+  //     setErrorMessage(null);
+  //   };
+
+  const onSubmit = (e) => {
+    e.preventDefault();
+    const { userId, password } = form;
+    dispatch({
+      type: 'login',
+      payload: { loginType: null, userId, password },
+    });
+  };
 
   return (
     <form onSubmit={(e) => e.preventDefault()}>
@@ -44,10 +68,8 @@ const Login = ({
           type="password"
           placeholder="비밀번호"
           maxLength="64"
-          value={form.password}
           onChange={onChange}
           //   onKeyUp={this.handleKeyUp}
-          ref={userIdInput}
         />
       </div>
       <div className="form-group form-check">
@@ -56,8 +78,10 @@ const Login = ({
             className="form-check-input"
             type="checkbox"
             name="saveUserId"
-            defaultChecked={saveUserId}
-            onClick={(e) => setSaveUserId(e.target.checked)}
+            defaultChecked={form.saveUserId}
+            onClick={(e) => {
+              dispatch(changeField({ form: 'login', key: 'saveUserId', value: e.target.checked }));
+            }}
           />
           아이디 저장하기
         </label>
@@ -72,18 +96,6 @@ const Login = ({
       </button>
     </form>
   );
-};
-
-Login.propTypes = {
-  //   member: PropTypes.instanceOf(PropTypes.object).isRequired,
-  form: PropTypes.instanceOf(PropTypes.object).isRequired,
-  onChange: PropTypes.func.isRequired,
-  //   onDismiss: PropTypes.func.isRequired,
-  onSubmit: PropTypes.func.isRequired,
-  //   visible: PropTypes.bool.isRequired,
-  saveUserId: PropTypes.bool.isRequired,
-  setSaveUserId: PropTypes.func.isRequired,
-  //   errorMessage: PropTypes.string.isRequired,
 };
 
 export default Login;

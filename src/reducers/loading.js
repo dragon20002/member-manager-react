@@ -9,16 +9,20 @@ export const startLoading = createAction(START_LOADING, (requestType) => request
 
 export const finishLoading = createAction(FINISH_LOADING, (requestType) => requestType);
 
-const initialState = {};
+const initialState = {
+  count: 0,
+};
 
 const loading = handleActions(
   {
     [START_LOADING]: (state, action) => ({
       ...state,
+      count: state.count + 1,
       [action.payload]: true,
     }),
     [FINISH_LOADING]: (state, action) => ({
       ...state,
+      count: state.count - 1,
       [action.payload]: false,
     }),
   },

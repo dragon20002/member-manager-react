@@ -1,68 +1,58 @@
-import { createAction, handleActions } from 'redux-actions';
+import { createSlice } from '@reduxjs/toolkit';
 import { takeLatest } from 'redux-saga/effects';
-import createRequestSaga, { createRequestActionTypes } from '../../utils/createRequestSaga';
 import authApi from '../../utils/api/auth';
+import createRequestSaga from '../../utils/createRequestSaga';
 
-const CHANGE_FIELD = 'auth/CHANGE_FIELD';
-const INITIALIZE_FORM = 'auth/INITIALIZE_FORM';
-
-const [LOGIN, LOGIN_SUCCESS, LOGIN_FAILURE] = createRequestActionTypes('auth/LOGIN');
-
-export const changeField = createAction(CHANGE_FIELD, ({ form, key, value }) => ({
-  form,
-  key,
-  value,
-}));
-
-export const initializeForm = createAction(INITIALIZE_FORM, (form) => form);
-
-export const login = createAction(LOGIN, ({ userId, password }) => ({
-  userId,
-  password,
-}));
-
-const loginSaga = createRequestSaga(LOGIN, authApi.login);
+// 비동기는 saga로 만든다. createRequestSaga는 커스텀 함수
+const loginSaga = createRequestSaga('auth/login', authApi.login);
 
 export function* authSaga() {
-  yield takeLatest(LOGIN, loginSaga);
+  // 위에서 만든 saga를 이곳에 모은다.
+  yield takeLatest('login', loginSaga);
 }
 
 const initialState = {
   login: {
     userId: JSON.parse(localStorage.getItem('userId')) || '',
     password: '',
+    saveUserId: false,
   },
-  auth: null,
-  authError: null,
+  authError: '',
+  auth: false,
+  user: {},
 };
 
-export default handleActions(
-  {
-    [CHANGE_FIELD]: (state, { payload: { form, key, value } }) => {
-      const formMap = state[form];
-      formMap[key] = value;
-      return {
-        ...state,
-        [form]: formMap,
+const authSlice = createSlice({
+  name: 'auth',
+  initialState,
+  reducers: {
+    changeField: (state, { payload: { form, key, value } }) => {
+      state[form][key] = value;
+    },
+    initForm: (state, { payload: form }) => {
+      state[form] = initialState[form];
+      state.authError = initialState.authError;
+    },
+    loginSuccess: (state, { payload: { hasAuth, loginType, imageUrl, name, token } }) => {
+      state.authError = initialState.authError;
+      state.auth = hasAuth;
+      state.user = {
+        loginType,
+        imageUrl,
+        name,
+        token,
       };
     },
-
-    [INITIALIZE_FORM]: (state, { payload: form }) => ({
-      ...state,
-      [form]: initialState[form],
-      authError: null,
-    }),
-
-    [LOGIN_SUCCESS]: (state, { payload: auth }) => ({
-      ...state,
-      authError: null,
-      auth,
-    }),
-
-    [LOGIN_FAILURE]: (state, { payload: error }) => ({
-      ...state,
-      authError: error,
-    }),
+    loginFailure: (state, { error }) => {
+      state.authError = error;
+    },
+    logout: (state) => {
+      state.auth = initialState.auth;
+      state.user = initialState.user;
+    },
   },
-  initialState,
-);
+});
+
+export const { changeField, initForm, loginSuccess, logout } = authSlice.actions;
+
+export default authSlice.reducer;

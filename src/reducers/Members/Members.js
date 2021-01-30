@@ -36,8 +36,8 @@ export function* membersSaga() {
 // -- Action이 발생하면 state를 변경하여 반환한다.
 
 const initialState = {
-  members: null,
-  error: null,
+  members: [],
+  error: '',
 };
 
 export default handleActions(

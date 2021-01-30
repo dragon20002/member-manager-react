@@ -1,8 +1,10 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+import { useSelector } from 'react-redux';
 import './Members.css';
 
-const Members = ({ members, loading, error }) => {
+const Members = () => {
+  const { members, error } = useSelector(({ members }) => members);
+
   if (error) {
     if (error.response && error.response.status) {
       return <div>{error.response.status}</div>;
@@ -10,11 +12,7 @@ const Members = ({ members, loading, error }) => {
     return <div>오류발생!</div>;
   }
 
-  if (loading || !members || !members.value) {
-    return null;
-  }
-
-  const trMembers = members.value.map((member) => (
+  const trMembers = members.map((member) => (
     <tr key={member.id}>
       <td>{member.userId}</td>
       <td>{member.name}</td>
@@ -35,15 +33,11 @@ const Members = ({ members, loading, error }) => {
           <th>주소</th>
         </tr>
       </thead>
-      <tbody>{members.value.length > 0 && trMembers}</tbody>
+      <tbody>{members.length > 0 && trMembers}</tbody>
     </table>
   );
 };
 
-Members.propTypes = {
-  members: PropTypes.arrayOf(PropTypes.object).isRequired,
-  loading: PropTypes.bool.isRequired,
-  error: PropTypes.instanceOf(PropTypes.object).isRequired,
-};
+Members.propTypes = {};
 
 export default Members;

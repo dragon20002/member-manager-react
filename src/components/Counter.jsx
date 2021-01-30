@@ -1,36 +1,46 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+import { useDispatch, useSelector } from 'react-redux';
+import { decrementAsync, incrementAsync, setColor } from '../reducers/Counter';
+import utils from '../utils/utils';
 import './Counter.css';
 
-const Counter = ({ number, color, onIncrement, onDecrement, onSetColor }) => (
-  <div
-    className="Counter"
-    onClick={onIncrement}
-    onContextMenu={(e) => {
-      e.preventDefault();
-      onDecrement();
-    }}
-    onDoubleClick={onSetColor}
-    style={{ backgroundColor: color }}
-  >
-    {number}
-  </div>
-);
+const Counter = () => {
+  const dispatch = useDispatch();
 
-Counter.propTypes = {
-  number: PropTypes.number,
-  color: PropTypes.string,
-  onIncrement: PropTypes.func,
-  onDecrement: PropTypes.func,
-  onSetColor: PropTypes.func,
+  // Mapping `State` to `Props`
+  const { number = 0, color = 'black' } = useSelector(({ counter }) => {
+    console.log('[mapStateToProps]', 'state', counter);
+    return counter;
+  });
+
+  // Mapping `Dispatch` to `Props`
+  const onIncrement = () => {
+    dispatch(incrementAsync());
+  };
+  const onDecrement = () => dispatch(decrementAsync());
+  const onSetColor = () => {
+    const color = utils.getRandomColor();
+    dispatch(setColor(color));
+  };
+
+  return (
+    <div
+      className="Counter"
+      onClick={onIncrement}
+      onContextMenu={(e) => {
+        e.preventDefault();
+        onDecrement();
+      }}
+      onDoubleClick={onSetColor}
+      style={{ backgroundColor: color }}
+    >
+      {number}
+    </div>
+  );
 };
 
-Counter.defaultProps = {
-  number: 0,
-  color: 'black',
-  onIncrement: () => console.warn('onIncrement not defined'),
-  onDecrement: () => console.warn('onDecrement not defined'),
-  onSetColor: () => console.warn('onSetColor not defined'),
-};
+Counter.propTypes = {};
+
+Counter.defaultProps = {};
 
 export default Counter;

@@ -1,42 +1,25 @@
 import React, { useEffect } from 'react';
-import PropTypes from 'prop-types';
-import { withRouter } from 'react-router-dom';
-import { useDispatch, useStore, useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 import Members from '../../components/Members/Members';
 import { listMembers } from '../../reducers/Members/Members';
 
-const MembersContainer = ({ history }) => {
+const MembersContainer = () => {
   const dispatch = useDispatch();
-  const store = useStore();
-  const { hasAuth } = store.getState();
+  const history = useHistory();
+  const { auth } = useSelector(({ auth }) => auth);
 
-  if (!hasAuth) {
-    history.push('/login');
-    return <div />;
-  }
-
-  // ----- Selector ----------------------------------------------- //
-
-  const { members, loading, error } = useSelector(({ members, loading }) => ({
-    members: members.members,
-    error: members.error,
-    loading: loading['members/LIST_MEMBERS'],
-  }));
-
-  // ----- Effect ------------------------------------------------- //
   useEffect(() => {
-    if (members) {
-      dispatch(listMembers);
-    } else if (error) {
+    if (!auth) {
       history.push('/login');
     }
-  }, [dispatch]);
 
-  return <Members members={members} loading={loading} error={error} />;
+    dispatch(listMembers());
+  }, [auth, dispatch]);
+
+  return auth && <Members />;
 };
 
-MembersContainer.propTypes = {
-  history: PropTypes.instanceOf(Object).isRequired,
-};
+MembersContainer.propTypes = {};
 
-export default withRouter(MembersContainer);
+export default MembersContainer;

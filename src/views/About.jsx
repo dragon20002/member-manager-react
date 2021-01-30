@@ -1,10 +1,10 @@
 import React from 'react';
-import CounterContainer from '../containers/CounterContainer';
+import Counter from '../components/Counter';
 import Style from './About.module.css';
 
 const About = () => (
   <div>
-    <h3 className={Style.h3}>여긴 이런 사람이 만들었습니다.</h3>
+    <h3 className={Style.h3}>주인장</h3>
     <p>
       mw-kim
       <br />
@@ -12,7 +12,7 @@ const About = () => (
       <br />
       010-****-****
     </p>
-    <CounterContainer />
+    <Counter />
   </div>
 );
 
