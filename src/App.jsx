@@ -5,7 +5,7 @@ import './App.css';
 import HeaderMenu from './components/HeaderMenu';
 import HeaderTop from './components/HeaderTop';
 import LoadingBar from './components/LoadingBar';
-import { loginSuccess, logout } from './reducers/Auth/Auth';
+import { logout } from './reducers/Auth/Auth';
 import Client from './utils/api/client';
 import About from './views/About';
 import CreateMember from './views/CreateMember';
@@ -48,40 +48,20 @@ const App = () => {
     dispatch(logout());
   }
 
-  function checkAuth() {
-    // this.setState({ isLoading: true });
-    Client()
-      .get('/api/login/has-auth')
-      .then((response) => {
-        console.log('[App]', '/api/login/has-auth', response);
-        const { hasAuth, loginType, token, imageUrl, name } = response.data;
-
-        if (hasAuth) {
-          dispatch(
-            loginSuccess({
-              hasAuth,
-              loginType,
-              imageUrl,
-              name,
-              token,
-            }),
-          );
-        } else {
-          invalidateAuth();
-        }
-        // })
-        // .finally(() => {
-        // this.setState({ isLoading: false });
-      });
-  }
-
   useEffect(() => {
+    // 최초 권한 체크
     const loginType = sessionStorage.getItem('login-type');
     const token = sessionStorage.getItem('token');
     Client().defaults.headers.loginType = loginType;
     Client().defaults.headers.token = token;
-    checkAuth();
-  }, []);
+    dispatch({ type: 'hasAuth' });
+  }, [dispatch]);
+
+  useEffect(() => {
+    if (!auth) {
+      invalidateAuth();
+    }
+  }, [auth]);
 
   return (
     <div id="app" className="App">

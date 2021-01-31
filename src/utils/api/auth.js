@@ -7,4 +7,7 @@ export default {
       password,
     });
   },
+  hasAuth() {
+    return Client().get('/api/login/has-auth');
+  },
 };
