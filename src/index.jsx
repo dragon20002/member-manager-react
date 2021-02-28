@@ -1,9 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
+import App from './App';
 import './index.css';
 import reportWebVitals from './reportWebVitals';
-import App from './App';
 import store from './store';
 
 // ----- Render App ------------------------------------------//
@@ -17,5 +17,5 @@ ReactDOM.render(
   document.getElementById('root'),
 );
 
-reportWebVitals();
-// reportWebVitals(console.log); //measuring performance
+// reportWebVitals();
+reportWebVitals(console.log); // measuring performance

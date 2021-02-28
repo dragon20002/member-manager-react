@@ -1,5 +1,5 @@
 import { call, put } from 'redux-saga/effects';
-import { startLoading, finishLoading } from '../reducers/Loading';
+import { finishLoading, startLoading } from '../reducers/Loading';
 
 export const createRequestActionTypes = (type) => {
   const SUCCESS = `${type}Success`;
@@ -16,12 +16,11 @@ export default function createRequestSaga(type, request) {
   const SUCCESS = `${type}Success`;
   const FAILURE = `${type}Failure`;
 
-  return function* (action) {
-    // TODO: Safari를 포함한 몇몇 브라우저에서 지원 안된다고 함. Test 후 rxjs 등으로 대체 필요
+  return function* anonymous(action) {
     yield put(startLoading(type));
     try {
       const response = yield call(request, action.payload);
-      console.log('[redux-saga]', type, response.data);
+      console.log('[response]', type, response.data);
       yield put({
         type: SUCCESS,
         payload: response.data,

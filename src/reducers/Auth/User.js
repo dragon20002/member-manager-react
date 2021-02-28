@@ -1,14 +1,5 @@
-import { createAction, handleActions } from 'redux-actions';
+import { createSlice } from '@reduxjs/toolkit';
 import { takeLatest } from 'redux-saga/effects';
-import { createRequestActionTypes } from '../../utils/createRequestSaga';
-
-const TEMP_SET_MEMBER = 'user/TEMP_SET_MEMBER';
-const [CHECK, CHECK_SUCCESS, CHECK_FAILURE] = createRequestActionTypes('user/CHECK');
-const LOGOUT = 'user/LOGOUT';
-
-export const tempSetUser = createAction(TEMP_SET_MEMBER, (user) => user);
-export const check = createAction(CHECK);
-export const logout = createAction(LOGOUT);
 
 function checkSaga() {
   try {
@@ -37,9 +28,9 @@ function logoutSaga() {
 }
 
 export function* userSaga() {
-  yield takeLatest(CHECK, checkSaga);
-  yield takeLatest(CHECK_FAILURE, checkFailureSaga);
-  yield takeLatest(LOGOUT, logoutSaga);
+  yield takeLatest('check', checkSaga);
+  yield takeLatest('checkFailure', checkFailureSaga);
+  yield takeLatest('logout', logoutSaga);
 }
 
 const initialState = {
@@ -47,29 +38,27 @@ const initialState = {
   checkError: null,
 };
 
-export default handleActions(
-  {
-    [TEMP_SET_MEMBER]: (state, { payload: user }) => ({
-      ...state,
-      user,
-    }),
-
-    [CHECK_SUCCESS]: (state, { payload: user }) => ({
-      ...state,
-      user,
-      checkError: null,
-    }),
-
-    [CHECK_FAILURE]: (state, { payload: error }) => ({
-      ...state,
-      user: null,
-      checkError: error,
-    }),
-
-    [LOGOUT]: (state) => ({
-      ...state,
-      user: null,
-    }),
-  },
+const userSlice = createSlice({
+  name: 'user',
   initialState,
-);
+  reducers: {
+    tempSetMember: (state, { payload: user }) => {
+      state.user = user;
+    },
+    checkSuccess: (state, { payload: user }) => {
+      state.user = user;
+      state.checkError = null;
+    },
+    checkFailure: (state, { payload: error }) => {
+      state.user = null;
+      state.checkError = error;
+    },
+    logout: (state) => {
+      state.user = null;
+    },
+  },
+});
+
+export const { tempSetMember, logout } = userSlice.actions;
+
+export default userSlice.reducer;

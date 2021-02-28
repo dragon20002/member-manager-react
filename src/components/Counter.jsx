@@ -1,6 +1,6 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { decrementAsync, incrementAsync, setColor } from '../reducers/Counter';
+import { setColor } from '../reducers/Counter';
 import utils from '../utils/utils';
 import './Counter.css';
 
@@ -8,16 +8,11 @@ const Counter = () => {
   const dispatch = useDispatch();
 
   // Mapping `State` to `Props`
-  const { number = 0, color = 'black' } = useSelector(({ counter }) => {
-    console.log('[mapStateToProps]', 'state', counter);
-    return counter;
-  });
+  const { number = 0, color = 'black' } = useSelector(({ counter }) => counter);
 
   // Mapping `Dispatch` to `Props`
-  const onIncrement = () => {
-    dispatch(incrementAsync());
-  };
-  const onDecrement = () => dispatch(decrementAsync());
+  const onIncrement = () => dispatch({ type: 'incrementAsync' });
+  const onDecrement = () => dispatch({ type: 'decrementAsync' });
   const onSetColor = () => {
     const color = utils.getRandomColor();
     dispatch(setColor(color));

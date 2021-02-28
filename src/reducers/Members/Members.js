@@ -1,35 +1,17 @@
-import { createAction, handleActions } from 'redux-actions';
+import { createSlice } from '@reduxjs/toolkit';
 import { takeLatest } from 'redux-saga/effects';
-import createRequestSaga, { createRequestActionTypes } from '../../utils/createRequestSaga';
 import membersApi from '../../utils/api/members';
-
-// ----- ActionType 생성 ---------------------------------------------- //
-// -- `Action`을 구분할 수 있는 string 값
-
-// -- listMembers의 ActionType 생성
-const [LIST_MEMBERS, LIST_MEMBERS_SUCCESS, LIST_MEMBERS_FAILURE] = createRequestActionTypes(
-  'members/LIST_MEMBERS',
-);
-
-// -- unloadMembers의 ActionType 생성
-const UNLOAD_MEMBERS = 'members/UNLOAD_MEMBERS';
-
-// ----- Action 생성 ------------------------------------------- //
-// -- 호출하면 Action Handler가 호출된다.
-
-export const listMembers = createAction(LIST_MEMBERS);
-
-export const unloadMembers = createAction(UNLOAD_MEMBERS);
+import createRequestSaga from '../../utils/createRequestSaga';
 
 // ----- Saga 생성 --------------------------------------------- //
 // -- 결과값을 받아 비즈니스 로직을 수행하는 redux-effects를 대체하여,
 // -- Generator Function을 사용하는 비동기 동작을 한 곳에서 관리할 수 있다.
 
-const listMembersSaga = createRequestSaga(LIST_MEMBERS, membersApi.listMembers);
+const listMembersSaga = createRequestSaga('members/listMembers', membersApi.listMembers);
 
 export function* membersSaga() {
   // `takeLatest` : listMembers 요청이 여러번 발생할 경우, 마지막으로 발생한 request의 응답만 받음
-  yield takeLatest(LIST_MEMBERS, listMembersSaga);
+  yield takeLatest('listMembers', listMembersSaga);
 }
 
 // ----- Action Handler --------------------------------------- //
@@ -40,19 +22,23 @@ const initialState = {
   error: '',
 };
 
-export default handleActions(
-  {
-    [LIST_MEMBERS_SUCCESS]: (state, { payload: members }) => ({
-      ...state,
-      members,
-    }),
-
-    [LIST_MEMBERS_FAILURE]: (state, { payload: error }) => ({
-      ...state,
-      error,
-    }),
-
-    [UNLOAD_MEMBERS]: () => initialState,
-  },
+const membersSlice = createSlice({
+  name: 'members',
   initialState,
-);
+  reducers: {
+    listMembersSuccess: (state, { payload: members }) => {
+      state.members = members;
+    },
+    listMembersFailure: (state, { payload: error }) => {
+      state.error = error;
+    },
+    unloadMembers: (state) => {
+      state.members = initialState.members;
+      state.error = initialState.error;
+    },
+  },
+});
+
+export const { unloadMembers } = membersSlice.actions;
+
+export default membersSlice.reducer;

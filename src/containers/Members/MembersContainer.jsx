@@ -2,7 +2,6 @@ import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import Members from '../../components/Members/Members';
-import { listMembers } from '../../reducers/Members/Members';
 
 const MembersContainer = () => {
   const dispatch = useDispatch();
@@ -14,7 +13,7 @@ const MembersContainer = () => {
       history.push('/login');
     }
 
-    dispatch(listMembers());
+    dispatch({ type: 'listMembers' });
   }, [auth, dispatch]);
 
   return auth && <Members />;
