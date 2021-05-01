@@ -7,13 +7,13 @@ import members, { membersSaga } from './Members/Members';
 import counter, { counterSaga } from './Counter';
 
 export function* rootSaga() {
-  yield all([fork(authSaga), fork(userSaga), fork(membersSaga), fork(counterSaga)]);
+	yield all([fork(authSaga), fork(userSaga), fork(membersSaga), fork(counterSaga)]);
 }
 
 export default combineReducers({
-  auth,
-  user,
-  loading,
-  members,
-  counter,
+	auth,
+	user,
+	loading,
+	members,
+	counter,
 });

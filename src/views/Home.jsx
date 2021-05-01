@@ -3,8 +3,8 @@ import Style from './Home.module.css';
 import './Home.css';
 
 function Home() {
-  // prettier-ignore
-  return (
+	// prettier-ignore
+	return (
     <div className="react-question sub-content1">
       <h5 className={Style.title}>React 관련 질문</h5>
 

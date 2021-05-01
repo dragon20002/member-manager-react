@@ -10,33 +10,33 @@ import createRequestSaga from '../../utils/createRequestSaga';
 const listMembersSaga = createRequestSaga('members/listMembers', membersApi.listMembers);
 
 export function* membersSaga() {
-  // `takeLatest` : listMembers 요청이 여러번 발생할 경우, 마지막으로 발생한 request의 응답만 받음
-  yield takeLatest('listMembers', listMembersSaga);
+	// `takeLatest` : listMembers 요청이 여러번 발생할 경우, 마지막으로 발생한 request의 응답만 받음
+	yield takeLatest('listMembers', listMembersSaga);
 }
 
 // ----- Action Handler --------------------------------------- //
 // -- Action이 발생하면 state를 변경하여 반환한다.
 
 const initialState = {
-  members: [],
-  error: '',
+	members: [],
+	error: '',
 };
 
 const membersSlice = createSlice({
-  name: 'members',
-  initialState,
-  reducers: {
-    listMembersSuccess: (state, { payload: members }) => {
-      state.members = members;
-    },
-    listMembersFailure: (state, { payload: error }) => {
-      state.error = error;
-    },
-    unloadMembers: (state) => {
-      state.members = initialState.members;
-      state.error = initialState.error;
-    },
-  },
+	name: 'members',
+	initialState,
+	reducers: {
+		listMembersSuccess: (state, { payload: members }) => {
+			state.members = members;
+		},
+		listMembersFailure: (state, { payload: error }) => {
+			state.error = error;
+		},
+		unloadMembers: (state) => {
+			state.members = initialState.members;
+			state.error = initialState.error;
+		},
+	},
 });
 
 export const { unloadMembers } = membersSlice.actions;

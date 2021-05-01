@@ -4,19 +4,19 @@ import { useHistory } from 'react-router-dom';
 import Members from '../../components/Members/Members';
 
 const MembersContainer = () => {
-  const dispatch = useDispatch();
-  const history = useHistory();
-  const { auth } = useSelector(({ auth }) => auth);
+	const dispatch = useDispatch();
+	const history = useHistory();
+	const { auth } = useSelector(({ auth }) => auth);
 
-  useEffect(() => {
-    if (!auth) {
-      history.push('/login');
-    }
+	useEffect(() => {
+		if (!auth) {
+			history.push('/login');
+		}
 
-    dispatch({ type: 'listMembers' });
-  }, [auth, dispatch]);
+		dispatch({ type: 'listMembers' });
+	}, [auth, dispatch]);
 
-  return auth && <Members />;
+	return auth && <Members />;
 };
 
 MembersContainer.propTypes = {};

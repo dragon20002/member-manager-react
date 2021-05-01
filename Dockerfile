@@ -13,10 +13,10 @@ COPY . /usr/src/app
 WORKDIR /usr/src/app
 
 # Install npm dependency
-RUN npm install
+RUN yarn install
 
 # Open port 8081
 EXPOSE 8081
 
 # Run
-CMD npm run serve
+CMD yarn start
