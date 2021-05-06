@@ -12,6 +12,10 @@ const routes = [
 		component: MainLayout,
 		routes: [
 			{
+				path: '/home',
+				component: Home,
+			},
+			{
 				path: '/show-members',
 				render: () => <ShowMembers />,
 				authCheck: true,
@@ -37,10 +41,6 @@ const routes = [
 			//     path: '/error',
 			//     component: Error,
 			// },
-			{
-				path: '/',
-				component: Home,
-			},
 		],
 	},
 ];

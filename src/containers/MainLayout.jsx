@@ -1,6 +1,7 @@
 import { makeStyles } from '@material-ui/core';
 import React, { Suspense } from 'react';
 import { useSelector } from 'react-redux';
+import { Redirect, Route, Switch } from 'react-router';
 import { renderRoutes } from 'react-router-config';
 import LoadingProgress from '../components/Common/LoadingProgress';
 import HeaderMenu from '../components/Header/HeaderMenu';
@@ -34,9 +35,9 @@ const MainLayout = () => {
 			<div className={classes.header}>
 				<HeaderTop />
 				<HeaderMenu />
-				<Suspense fallback={<LoadingProgress />} /* 로딩화면 */>
-					{renderRoutes(routes)}
-					{/* <Switch>
+				<Suspense fallback="" /* 로딩화면 */>
+					{/* {renderRoutes(routes)} */}
+					<Switch>
 						{routes[0].routes.map((route, key) => (
 							<Route
 								key={key}
@@ -49,7 +50,7 @@ const MainLayout = () => {
 						<Route path="/">
 							<Redirect to="/home" />
 						</Route>
-					</Switch> */}
+					</Switch>
 				</Suspense>
 			</div>
 			<div className={classes.footer}>&copy;2021</div>

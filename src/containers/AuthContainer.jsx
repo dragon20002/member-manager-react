@@ -2,7 +2,7 @@ import React, { useContext, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory, useLocation, useRouteMatch } from 'react-router-dom';
 import Client from '../utils/api/client';
-import { logout } from './reducers/Auth/Auth';
+import { logout } from '../reducers/Auth/Auth';
 import PropTypes from 'prop-types';
 import AppContext from '../AppContext';
 import { matchRoutes } from 'react-router-config';
@@ -43,7 +43,7 @@ const AuthContainer = ({ children }) => {
 		}
 	}, [auth]);
 
-	return auth && <>{children}</>;
+	return <>{children}</>;
 };
 
 AuthContainer.propTypes = {
