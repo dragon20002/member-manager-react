@@ -10,7 +10,7 @@ const menus = [
 		name: '회원관리',
 	},
 	{
-		id: 1,
+		id: 2,
 		path: '/about',
 		name: 'About',
 	},

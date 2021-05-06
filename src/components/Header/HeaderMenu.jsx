@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { useHistory } from 'react-router-dom';
-import menus from '../../configs/headerMenu';
+import menus from '../../configs/headerMenuConfig';
 import { Link, makeStyles } from '@material-ui/core';
 
 const useStyles = makeStyles(() => ({

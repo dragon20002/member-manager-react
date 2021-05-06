@@ -4,6 +4,8 @@ import { useHistory } from 'react-router-dom';
 import { Link, makeStyles } from '@material-ui/core';
 import './HeaderTop.css';
 import NoImage from '../../assets/user-circle-solid.svg';
+import { useDispatch, useSelector } from 'react-redux';
+import { logout } from '../../reducers/Auth/Auth';
 
 const useStyles = makeStyles(() => ({
 	root: {
@@ -24,10 +26,17 @@ const useStyles = makeStyles(() => ({
 	menuLink: { cursor: 'pointer' },
 }));
 
-const HeaderTop = ({ hasAuth, doLogout, imageUrl, name }) => {
+const HeaderTop = () => {
 	const classes = useStyles();
+	const dispatch = useDispatch();
 	const history = useHistory();
 
+	const { auth: hasAuth, user } = useSelector(({ auth }) => ({
+		auth: auth.auth,
+		user: auth.user,
+	}));
+
+	let { imageUrl, name } = user;
 	if (!hasAuth) {
 		imageUrl = '../assets/user-circle-solid.svg';
 		name = '내 정보';
@@ -36,7 +45,7 @@ const HeaderTop = ({ hasAuth, doLogout, imageUrl, name }) => {
 	}
 
 	const handleLogout = () => {
-		doLogout();
+		dispatch(logout());
 		history.push('/');
 	};
 
@@ -90,7 +99,6 @@ HeaderTop.propTypes = {
 	hasAuth: PropTypes.bool,
 	imageUrl: PropTypes.string,
 	name: PropTypes.string,
-	doLogout: PropTypes.func,
 };
 
 export default HeaderTop;
