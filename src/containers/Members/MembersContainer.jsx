@@ -8,7 +8,8 @@ const MembersContainer = () => {
 	const history = useHistory();
 	const location = useLocation();
 	const routeMatch = useRouteMatch();
-	const { auth } = useSelector(({ auth }) => auth);
+	// const { auth } = useSelector(({ auth }) => auth);
+	const auth = true;
 
 	console.log({ history, location, routeMatch });
 

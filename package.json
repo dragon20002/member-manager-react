@@ -12,6 +12,7 @@
     "@testing-library/user-event": "^12.6.0",
     "axios": "^0.21.1",
     "babel-plugin-module-resolver": "^4.1.0",
+    "http-proxy-middleware": "^2.0.6",
     "jquery": "^3.5.1",
     "prop-types": "^15.7.2",
     "react": "^17.0.1",

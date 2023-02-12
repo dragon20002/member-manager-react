@@ -15,9 +15,9 @@ const App = () => (
 			<Provider store={store}>
 				<BrowserRouter>
 					<ThemeProvider theme={theme}>
-						<AuthContainer>
+						{/* <AuthContainer> */}
 							<MainLayout />
-						</AuthContainer>
+						{/* </AuthContainer> */}
 					</ThemeProvider>
 				</BrowserRouter>
 			</Provider>
